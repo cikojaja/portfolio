@@ -1,0 +1,1119 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Enrico Jonathan Liman · AI Automation Builder</title>
+<meta name="description" content="Enrico Jonathan Liman, AI Automation Builder. I build AI assistants and apps with Claude, and make videos in code.">
+<meta property="og:title" content="Enrico Jonathan Liman · AI Automation Builder">
+<meta property="og:description" content="I build AI assistants and apps with Claude, and make videos in code.">
+<meta property="og:image" content="https://ciko-portfolio.vercel.app/media/og.jpg">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0A0A0A">
+<link rel="icon" href="media/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="media/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="media/apple-touch-icon.png">
+<script>document.documentElement.className = 'js lock'; history.scrollRestoration = 'manual';</script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,600&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="rooms.css" rel="stylesheet">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+<style>
+:root{--bg:#0A0A0A;--gold:#C9923E;--goldink:#A87528;--mute:rgba(255,255,255,.62);--line:rgba(255,255,255,.14);--ease:cubic-bezier(.16,1,.3,1);--spring:cubic-bezier(.34,1.56,.64,1)}
+*{box-sizing:border-box;margin:0}
+html{background:var(--bg);color:#fff;-webkit-text-size-adjust:100%}
+html.lock{overflow:hidden}
+body{font:400 15px/1.45 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+a{color:inherit;text-decoration:none}
+h1,h2,h3{font-weight:800;letter-spacing:-.035em;line-height:.98}
+em{font:italic 600 1.12em/.9 'Cormorant Garamond',serif;color:var(--gold);letter-spacing:-.01em}
+.ic{width:1em;height:1em;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+@media (hover:hover){.t-touch{display:none}}
+@media (hover:none){.t-mouse{display:none}}
+
+/* reveal on scroll: [data-rv] gets .in, its .rv children rise in */
+.js .rv{opacity:0;translate:0 26px;transition:opacity 1s var(--ease) var(--d,0s),translate 1.2s var(--ease) var(--d,0s)}
+.js .in .rv{opacity:1;translate:none}
+.ln{display:block;overflow:hidden;padding:0 .12em .1em .04em;margin:0 -.12em -.1em -.04em}
+.ln>span{display:block}
+.js .ln>span{translate:0 112%;transition:translate 1.3s var(--ease) var(--d,0s)}
+.js .in .ln>span{translate:none}
+
+/* loading: a gold line draws the island's border, then the island builds itself inside it */
+.loader{display:none}
+.js .loader{display:block;position:fixed;inset:0;z-index:40;background-color:var(--bg);transition:background-color 1.1s var(--ease)}
+.loader svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.loader polygon{fill:none;stroke:var(--gold);stroke-width:1.5;stroke-linejoin:round;transition:opacity 1.2s var(--ease)}
+.loader .halo{stroke-width:7;filter:blur(6px);opacity:0}
+.loader.done .halo{opacity:.55}
+.ld-mark{position:absolute;left:0;right:0;top:50%;translate:0 -50%;text-align:center;transition:opacity .6s}
+.ld-mark b{display:block;font:900 min(30px,6.2vw)/1 Inter,system-ui,sans-serif;letter-spacing:.34em;text-indent:.34em;color:var(--gold);opacity:.4;transition:opacity .8s var(--ease)}
+.ld-mark span{display:block;margin-top:14px;font:600 10.5px/1 Inter,system-ui,sans-serif;letter-spacing:.32em;text-indent:.32em;color:#ddd;opacity:0;translate:0 8px;transition:opacity .9s var(--ease) .15s,translate 1.1s var(--ease) .15s}
+.loader.done .ld-mark b{opacity:1}
+.loader.done .ld-mark span{opacity:1;translate:none}
+.ld-n{position:absolute;left:0;right:0;bottom:max(34px,env(safe-area-inset-bottom));text-align:center;font:300 12px/1 Inter,system-ui,sans-serif;letter-spacing:.3em;text-indent:.3em;color:#8f8f8f;font-variant-numeric:tabular-nums;transition:opacity .6s}
+.loader.out{background-color:rgba(10,10,10,0);pointer-events:none}
+.loader.out .ld-mark,.loader.out .ld-n{opacity:0}
+.loader.out polygon.line,.loader.out polygon.halo{opacity:0;transition-delay:.9s}
+.loader.gone{display:none}
+
+/* top bar: player card, filter chips, hire me */
+.top{position:fixed;inset:0 0 auto;z-index:6;display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;padding:max(14px,env(safe-area-inset-top)) 18px 12px;
+  transition:opacity 1s var(--ease) .5s,translate 1s var(--ease) .5s,background-color .5s,-webkit-backdrop-filter .5s,backdrop-filter .5s}
+.js body:not(.ready) .top{opacity:0;translate:0 -14px}
+.top.solid{background-color:rgba(10,10,10,.93);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+.card{display:flex;align-items:center;gap:10px}
+.card img{width:38px;height:38px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 1.5px var(--gold)}
+.card b{display:block;font:900 16px/1 Inter,system-ui,sans-serif;letter-spacing:.08em;color:var(--gold)}
+.card small{display:block;margin-top:4px;font:600 11px/1 Inter,system-ui,sans-serif;color:#ddd}
+.chips{order:3;width:100%;display:flex;gap:8px;transition:opacity .45s}
+.chips button{border:1px solid rgba(255,255,255,.45);border-radius:999px;padding:7px 14px;font:600 13px/1 Inter,system-ui,sans-serif;background:rgba(10,10,10,.35);transition:background-color .3s,color .3s,border-color .3s}
+.chips .on{background:#fff;color:#0A0A0A;border-color:#fff}
+.diving .chips{opacity:0;pointer-events:none}
+.right{margin-left:auto;display:flex;gap:10px;align-items:center}
+.cta{background:var(--gold);color:#0A0A0A;font:800 12px/1 Inter,system-ui,sans-serif;letter-spacing:.06em;padding:10px 14px;border-radius:999px;white-space:nowrap}
+
+/* ?theme=light: the white daytime look (dark bar on top, dark words on white) */
+.light .hero{background:#F3F0EB}
+.light .top{background-color:rgba(10,10,10,.93)}
+.light .tap{background:#0A0A0A;color:#fff;border-color:#0A0A0A}
+.light .welcome{color:#0A0A0A}.light .welcome span{color:rgba(10,10,10,.62)}
+.light .tg{background:rgba(255,255,255,.95);color:#0A0A0A;box-shadow:0 8px 22px rgba(0,0,0,.12)}.light .tg small{color:rgba(10,10,10,.55)}
+/* hero: just the island, full screen */
+.hero{position:relative;height:100svh;min-height:560px;overflow:hidden;
+  background:radial-gradient(ellipse 58% 46% at 50% 60%,rgba(201,146,62,.2),transparent 72%),radial-gradient(ellipse 70% 40% at 50% -6%,rgba(232,170,80,.2),transparent 70%),var(--bg)} /* warm gold light behind the island */
+#isle{position:absolute;inset:0}
+.tap{position:absolute;left:50%;bottom:max(22px,env(safe-area-inset-bottom));z-index:2;translate:-50% 0;display:flex;align-items:center;gap:7px;font:600 12px/1 Inter,system-ui,sans-serif;color:#ddd;
+  background:rgba(10,10,10,.6);border:1px solid var(--line);padding:8px 13px;border-radius:999px;white-space:nowrap;transition:opacity .7s var(--ease) 1.6s,translate .9s var(--ease) 1.6s}
+.tap i{width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 4px rgba(201,146,62,.25)}
+.js body:not(.ready) .tap,.diving .tap{opacity:0;translate:-50% 10px;transition-delay:0s}
+.welcome{position:absolute;left:18px;right:18px;bottom:max(76px,calc(env(safe-area-inset-bottom) + 54px));z-index:2;pointer-events:none;
+  transition:opacity .9s var(--ease) 1.2s,translate 1.1s var(--ease) 1.2s}
+.welcome b{display:block;font:800 40px/.98 Inter,system-ui,sans-serif;letter-spacing:-.04em}
+.welcome span{display:block;margin-top:10px;font:500 15px/1.4 Inter,system-ui,sans-serif;color:#cfcfcf}
+.js body:not(.ready) .welcome,.diving .welcome{opacity:0;translate:0 14px;transition-delay:0s}
+
+/* name tags on the island: icon on top, name + one line, "Enter" once picked */
+.pin{position:absolute;left:0;top:0;display:flex;flex-direction:column;align-items:center;gap:5px;padding:0;transition:opacity .3s}
+.pin.hot{z-index:2}
+.bd{width:30px;height:30px;border-radius:8px;overflow:hidden;display:grid;place-items:center;flex:none;box-shadow:0 4px 12px rgba(0,0,0,.5);transition:transform .5s var(--spring)}
+.bd img{width:100%;height:100%;display:block}
+.bd.g{background:var(--gold);color:#0A0A0A;font-size:16px}
+.bd.g .ic{stroke-width:2}
+.tg{display:flex;flex-direction:column;align-items:center;gap:3px;padding:5px 9px;border-radius:8px;background:rgba(10,10,10,.78);border:1px solid rgba(201,146,62,.6);
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);transition:background-color .3s,color .3s,border-color .3s,box-shadow .4s}
+.tg b{font:800 8.5px/1 Inter,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.tg small{font:500 8px/1 Inter,system-ui,sans-serif;color:rgba(255,255,255,.66);white-space:nowrap;transition:color .3s}
+.go{display:flex;align-items:center;gap:4px;height:0;margin-top:-5px;padding:0 10px;overflow:hidden;opacity:0;border-radius:999px;background:#fff;color:#0A0A0A;font:800 10px/1 Inter,system-ui,sans-serif;
+  transition:height .35s var(--ease),margin .35s var(--ease),opacity .25s}
+.go .ic{font-size:9px}
+.pin.hot .bd{transform:translateY(-4px) scale(1.12)}
+.pin.hot .tg{background:var(--gold);color:#0A0A0A;border-color:var(--gold);box-shadow:0 8px 24px rgba(201,146,62,.45)}
+.pin.hot .tg small{color:rgba(0,0,0,.62)}
+.pin.hot .go{height:22px;margin-top:0;opacity:1}
+.pin.glow .tg{animation:glow 1.3s ease-in-out infinite alternate}
+@keyframes glow{to{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,146,62,.3),0 0 26px rgba(201,146,62,.6)}}
+@media (max-width:899px){.pin[data-k=studio]{margin-left:18px}} /* phone: keeps the studio icon off SmartKartoffel's tag */
+
+/* under the island: who + what in one line, then quick rows */
+.below{position:relative;z-index:1;background:var(--bg)}
+.intro{padding:56px 18px 4px}
+.orig{display:flex;align-items:center;gap:8px;font:700 11px/1 Inter,system-ui,sans-serif;letter-spacing:.3em;color:#ddd}
+.orig i{width:19px;height:22px;background:url(media/spark.svg) center/contain no-repeat}
+.intro h1{font-size:44px;margin:12px 0 10px}
+.intro h1 svg{vertical-align:-2px;margin-left:8px}
+.intro p{color:#e6e6e6;font-size:15px;max-width:30em}
+.meta{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:14px;font:600 13px/1 Inter,system-ui,sans-serif;color:#cfcfcf}
+.meta b{color:var(--gold)}.meta .box{border:1px solid rgba(255,255,255,.5);padding:3px 6px;border-radius:3px}
+.rows{display:flex;flex-direction:column;gap:30px;padding:40px 0 80px 18px}
+[data-f=auto] .row.vid,[data-f=video] .row.auto{display:none}
+.rt{font-size:21px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.rt .mascot svg{display:block;height:.6em;width:auto}
+.rail{display:flex;gap:9px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:0 18px;margin:-6px 0 0 -18px;padding:6px 18px 10px;scrollbar-width:none}
+.rail::-webkit-scrollbar{display:none}
+.rail>*{position:relative;flex:none;overflow:hidden;border-radius:6px;background:#1a1a1a;padding:0;text-align:left;scroll-snap-align:start;
+  transition:opacity 1s var(--ease) var(--d,0s),translate 1.2s var(--ease) var(--d,0s),box-shadow .3s}
+.js .rail>*{opacity:0;translate:0 26px}
+.js .in .rail>*{opacity:1;translate:none}
+.rail>:hover{box-shadow:0 0 0 2px var(--gold)}
+.rail>:focus-visible{outline-offset:2px}
+.poster{width:112px;height:168px}
+.reel{width:96px;height:170px}
+.rail img,.rail video{width:100%;height:100%;object-fit:cover;display:block;transition:transform .9s var(--ease)}
+.rail>:hover img,.rail>:hover video{transform:scale(1.07)}
+.hit{position:absolute;z-index:2;left:6px;top:20px;padding:3px 5px;background:var(--gold);color:#0A0A0A;font:800 7.5px/1 Inter,system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.soc{display:flex;gap:10px;margin-top:22px}
+.soc a{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line);color:#fff;transition:background-color .3s,color .3s,border-color .3s}
+.soc a:hover{background:var(--gold);border-color:var(--gold);color:#0A0A0A}
+.soc svg{width:19px;height:19px}
+#player .pst a{color:inherit;text-decoration:underline;text-underline-offset:3px}
+.proof{color:var(--gold);text-decoration:underline;text-underline-offset:3px}
+#player .pst{position:absolute;left:0;top:-46px;padding:8px 12px;border-radius:999px;background:var(--gold);color:#0A0A0A;font:800 12.5px/1 Inter,system-ui,sans-serif;transition:opacity .4s .35s}
+@starting-style{#player[open] .pst{opacity:0}}
+#player.closing .pst{opacity:0;transition-delay:0s}
+.cat{position:absolute;z-index:2;left:6px;top:6px;padding:3px 5px;background:rgba(10,10,10,.62);color:var(--gold);font:800 7.5px/1 Inter,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase}
+.rail>:after{content:"";position:absolute;inset:45% 0 0;background:linear-gradient(transparent,rgba(0,0,0,.85))}
+.rail b{position:absolute;z-index:2;left:8px;right:8px;bottom:9px}
+.poster b{font:900 12.5px/1.05 Inter,system-ui,sans-serif;letter-spacing:.02em;text-shadow:0 1px 8px rgba(0,0,0,.7)}
+.reel b{font:700 11.5px/1.15 Inter,system-ui,sans-serif}
+.cb{position:absolute;left:7px;top:7px;z-index:2;width:15px;height:18px;background:url(media/spark.svg) center/contain no-repeat;filter:drop-shadow(0 1px 3px rgba(0,0,0,.7))}
+.new{position:absolute;right:0;top:10px;z-index:2;background:var(--gold);color:#0A0A0A;font:800 9px/1 Inter,system-ui,sans-serif;letter-spacing:.12em;padding:4px 6px}
+.pl{position:absolute;left:50%;top:42%;transform:translate(-50%,-50%);z-index:2;width:34px;height:34px;border-radius:50%;background:rgba(10,10,10,.55);
+  border:1.5px solid #fff;display:grid;place-items:center;font-size:14px;transition:background-color .3s}
+.reel:hover .pl{background:var(--gold)}
+.orb{display:none} /* desktop: Claude in the middle, the apps I connect turning around it, each in its own colours */
+.orb>i{position:absolute;left:50%;top:50%;border-radius:50%;border:1.5px solid rgba(201,146,62,.3);translate:-50% -50%}
+.orb .r1{width:270px;height:270px}.orb .r2{width:430px;height:430px}
+.orb .core{position:absolute;left:50%;top:50%;width:124px;height:124px;translate:-50% -50%;display:grid;place-items:center;border-radius:50%;background:radial-gradient(#2a1a12,#120c09);box-shadow:0 0 0 2px var(--gold),0 0 80px rgba(217,119,87,.45)}
+.orb .spin{position:absolute;inset:0;animation:orb 80s linear infinite}
+.orb .spin+.spin{animation-duration:120s;animation-direction:reverse}
+.orb .lg{position:absolute;display:grid;place-items:center;width:60px;height:60px;margin:-30px 0 0 -30px;border-radius:50%;box-shadow:0 0 0 1.5px rgba(201,146,62,.45),0 12px 26px rgba(0,0,0,.6);animation:orb 80s linear infinite reverse} /* turns back as fast as its ring: the logo stays upright */
+.orb .spin+.spin .lg{animation-duration:120s;animation-direction:normal}
+.orb .lg svg{width:calc(var(--s) * 100%);height:calc(var(--s) * 100%)}
+@keyframes orb{to{rotate:360deg}}
+
+/* last episode: a hand keeps reaching for the button; touch it and the words pop out; click it and it grows into the contact page */
+/* why me: three proof stories, like Instagram. Each one plays its proof; the bar runs only while it is on screen */
+.why{padding:24px 18px 88px}
+.why .lb,.jobs .lb{color:var(--gold)}
+.why h2,.jobs h2{font-size:44px;margin:12px 0 22px}
+.st{position:relative;padding:16px 16px 46px;border-radius:22px;border:1px solid rgba(201,146,62,.35);overflow:hidden;
+  background:radial-gradient(130% 55% at 50% 0%,rgba(201,146,62,.3),transparent 62%),linear-gradient(#15120e,#0c0b09)}
+.st.wait *{animation-play-state:paused!important}
+.st-bars{display:flex;gap:4px}
+.st-bars i{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.22);overflow:hidden}
+.st-bars b{display:block;width:0;height:100%;background:#fff}
+.st-bars .done b{width:100%}
+.st-bars .on b{animation:st-fill 6.5s linear forwards}
+.st-deck{display:grid;margin-top:20px}
+.st-s{grid-area:1/1;display:flex;flex-direction:column;opacity:0;visibility:hidden;translate:16px 0;transition:opacity .3s,translate .5s var(--ease),visibility 0s .3s}
+.st-s.on{opacity:1;visibility:visible;translate:none;transition:opacity .3s,translate .5s var(--ease)}
+.st-h{display:flex;align-items:baseline;gap:10px}
+.st-h span{font:900 34px/1 Inter,system-ui,sans-serif;color:#15120e;-webkit-text-stroke:1.4px var(--gold);paint-order:stroke fill}
+.st-h b{font:800 26px/1.08 Inter,system-ui,sans-serif;letter-spacing:-.03em}
+.st-v{flex:1;display:flex;flex-direction:column;justify-content:center;padding:22px 0}
+.st-c{font-size:17px;line-height:1.4;color:#e8e8e8}
+.st-c strong{color:var(--gold)}
+.st-c a{color:var(--gold);font-weight:700;text-decoration:underline;text-underline-offset:3px}
+.st a{position:relative;z-index:3}
+.st-z{position:absolute;z-index:2;top:0;bottom:0;left:0;width:34%;-webkit-tap-highlight-color:transparent}
+.st-z+.st-z{left:34%;width:66%}
+.st-foot{position:absolute;left:16px;right:16px;bottom:16px;display:flex;justify-content:space-between;font:700 11px/1 Inter,system-ui,sans-serif;letter-spacing:.12em;color:rgba(255,255,255,.45)}
+.st-pill{margin-left:auto;display:flex;align-items:center;gap:6px;width:fit-content;padding:7px 10px;border-radius:999px;background:var(--gold);color:#0A0A0A;font:800 11px/1 Inter,system-ui,sans-serif;letter-spacing:.1em}
+.st-pill:before{content:"";width:6px;height:6px;border-radius:50%;background:#0A0A0A}
+/* 1 · two weeks tick by, on day 14 the app goes live */
+.st-cal{display:grid;gap:7px;counter-reset:day}
+.st-cal div{display:grid;grid-template-columns:28px repeat(7,1fr);gap:6px;align-items:center}
+.st-cal span{font:800 10px/1 Inter,system-ui,sans-serif;letter-spacing:.06em;color:var(--gold)}
+.st-cal i{position:relative;height:52px;counter-increment:day;border-radius:9px;background:rgba(201,146,62,.16);border:1px solid rgba(201,146,62,.42)}
+.st-cal i:after{content:"";position:absolute;left:50%;top:50%;width:9px;height:5px;border:solid var(--gold);border-width:0 0 2px 2px;translate:-50% -70%;rotate:-45deg}
+.st-cal .st-live{background:var(--gold);border-color:var(--gold);box-shadow:0 0 22px rgba(201,146,62,.8)}
+.st-cal i:before{content:counter(day);position:absolute;left:6px;top:6px;font:700 9px/1 Inter,system-ui,sans-serif;color:rgba(201,146,62,.75)}
+.st-cal .st-live:before,.st-cal .st-live:after{content:none}
+.st-cal .st-live img{position:absolute;inset:5px;width:calc(100% - 10px);height:calc(100% - 10px);border-radius:6px;object-fit:cover}
+.st-s.on .st-cal i{animation:st-day .3s both calc(.3s + var(--i) * .1s)}
+.st-s.on .st-cal i:after{animation:st-pop .35s var(--spring) both calc(.3s + var(--i) * .1s)}
+.st-s.on .st-cal .st-live{animation:st-pop .6s var(--spring) both 1.75s}
+.st-app{display:flex;align-items:center;gap:12px;margin-top:26px;padding:14px 12px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid var(--line)}
+.st-app img{width:52px;height:52px;border-radius:13px}
+.st-app b{display:block;font:800 18px/1.15 Inter,system-ui,sans-serif}.st-app small{color:#bbb;font-size:12.5px}
+.st-s.on .st-app{animation:st-up .6s var(--ease) both 2.1s}
+.st-s.on .st-app .st-pill{animation:st-pop .5s var(--spring) both 2.45s}
+/* 2 · a day with Robert: the chat fills up hour by hour, older messages scroll away */
+.st-tg{padding:12px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid var(--line)}
+.st-tgh{display:flex;align-items:center;gap:10px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+.st-tgh img{width:34px;height:34px;border-radius:50%}
+.st-tgh b{display:block;font:800 15px/1.15 Inter,system-ui,sans-serif}.st-tgh small{color:#aaa;font-size:12px}
+.st-tgh svg{width:24px;height:24px;margin-left:auto}
+.st-chat{display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;height:292px;overflow:hidden;-webkit-mask-image:linear-gradient(transparent,#000 16%);mask-image:linear-gradient(transparent,#000 16%)}
+.st-m{flex:none;max-width:90%;max-height:200px;margin-top:8px;padding:9px 11px;border-radius:4px 14px 14px 14px;background:#23201b;font-size:13px;line-height:1.35;color:#d4d4d4;overflow:hidden}
+.st-m.me{align-self:flex-end;border-radius:14px 4px 14px 14px;background:rgba(201,146,62,.25);color:#fff;font-weight:700}
+.st-m p+p{margin-top:4px}
+.st-bh{display:flex;align-items:center;gap:7px;font-weight:800;color:#fff}
+.st-bh .ic{font-size:15px;color:var(--gold)}
+.st-bh .mascot svg{height:11px}
+.st-bh time{margin-left:auto;padding-left:12px;font:700 10.5px/1 Inter,system-ui,sans-serif;color:var(--gold)}
+.st-tag{padding:2px 5px;border-radius:4px;background:var(--gold);color:#0A0A0A;font:800 9px/1.2 Inter,system-ui,sans-serif;letter-spacing:.08em}
+.st-q{font-style:italic;color:#bdbdbd}
+.st-k{display:flex;gap:6px;margin-top:8px}
+.st-k span{flex:1;padding:7px 9px;border-radius:8px;background:rgba(255,255,255,.08);text-align:center;font:700 11.5px/1 Inter,system-ui,sans-serif;white-space:nowrap;color:#fff}
+.st-k .on{background:var(--gold);color:#0A0A0A}
+.st-bars i:nth-child(2).on b{animation-duration:10s}
+.st-s.on .st-m{animation:st-msg .7s var(--ease) both calc(.3s + var(--i) * 1.45s)}
+.st-s.on .st-k .on{animation:st-tap .45s ease both calc(1.4s + var(--i) * 1.45s)}
+/* 3 · Tomatina plays while the counter runs to 700K */
+.st-tm{display:flex;align-items:center;gap:16px}
+.st-tm video{flex:none;width:128px;aspect-ratio:9/16;border-radius:12px;object-fit:cover;background:#000;box-shadow:0 0 0 1.5px rgba(201,146,62,.6),0 20px 40px rgba(0,0,0,.5)}
+.st-n{display:block;font:900 54px/.85 Inter,system-ui,sans-serif;letter-spacing:-.05em;font-variant-numeric:tabular-nums;color:#15120e;-webkit-text-stroke:2.2px var(--gold);paint-order:stroke fill}
+.st-tm small{display:block;margin-top:8px;font:700 14px/1.2 Inter,system-ui,sans-serif}
+.st-tm .st-pill{margin:14px 0 0}.st-tm .st-pill:before{content:none}
+.st-s.on .st-tm .st-pill{animation:st-pop .5s var(--spring) both 1.6s}
+/* 4 · one link goes in (one tap), Claude makes the short (my 3 OKs on the way), the finished short comes out */
+.st-mk{align-items:center}
+.st-lk{display:flex;align-items:center;gap:9px;padding:7px 7px 7px 14px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid var(--line);font:600 13px/1 Inter,system-ui,sans-serif;color:#cfd3d8}
+.st-lk>svg{width:18px;height:18px;color:#E4405F}
+.st-lk b{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--gold);color:#0A0A0A;font-size:14px}
+.st-w{position:relative;width:2px;height:26px;background:repeating-linear-gradient(var(--gold) 0 4px,transparent 4px 8px);opacity:.75}
+.st-w:after{content:"";position:absolute;left:-4px;top:0;width:10px;height:10px;border-radius:50%;background:#FFF1CF;box-shadow:0 0 12px 3px rgba(243,212,154,.7);opacity:0}
+.st-cl{width:250px;padding:12px 14px 10px;border-radius:16px;background:linear-gradient(160deg,rgba(201,146,62,.22),rgba(201,146,62,.06));border:1.5px solid rgba(201,146,62,.6);text-align:center}
+.st-cl p{display:flex;align-items:center;justify-content:center;gap:9px;font:800 15px/1 Inter,system-ui,sans-serif}
+.st-pb{position:relative;height:6px;margin-top:16px;border-radius:3px;background:rgba(255,255,255,.12)}
+.st-pb i{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,#B98235,#F3D49A)}
+.st-pb b{position:absolute;top:50%;left:calc(30% + var(--i) * 30%);display:grid;place-items:center;width:24px;height:15px;margin:-7.5px 0 0 -12px;border-radius:8px;background:var(--gold);box-shadow:0 0 0 2px #1d1710;font:900 7.5px/1 Inter,system-ui,sans-serif;color:#0A0A0A}
+.st-cl small{position:relative;display:block;height:14px;margin-top:11px;font:700 10.5px/14px Inter,system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#c9b48f}
+.st-cl small span{position:absolute;left:0;right:0;opacity:0}
+.st-cl small span:last-child{opacity:1}
+.st-out{display:flex;align-items:center;gap:14px}
+.st-sh{width:76px;aspect-ratio:9/16;border-radius:10px;overflow:hidden;box-shadow:0 0 0 1.5px var(--gold),0 14px 30px rgba(0,0,0,.6)}
+.st-sh img{width:100%;height:100%;object-fit:cover}
+.st-out p{font:800 15px/1.3 Inter,system-ui,sans-serif}
+.st-out small{display:flex;align-items:center;gap:6px;margin-top:5px;font:600 12px/1 Inter,system-ui,sans-serif;color:#9fd8a8}
+.st-out small svg{width:15px;height:15px}
+.st-bars i:nth-child(4).on b{animation-duration:8.5s}
+.st-s.on .st-lk{animation:st-up .5s var(--ease) both .2s}
+.st-s.on .st-lk b{animation:st-tap .45s ease both .9s}
+.st-s.on .st-w:after{animation:st-run .6s var(--ease) both var(--d)}
+.st-s.on .st-cl{animation:st-pop .5s var(--spring) both 1.4s}
+.st-s.on .st-pb i{animation:st-bar 4s linear both 1.7s}
+.st-s.on .st-pb b{animation:st-pop .35s var(--spring) both calc(2.9s + var(--i) * 1.2s)}
+.st-s.on .st-cl small span{animation:st-stage 1s both calc(1.7s + var(--i) * 1s)}
+.st-s.on .st-cl small span:last-child{animation:st-up .4s both 4.7s}
+.st-s.on .st-out{animation:st-pop .55s var(--spring) both 6.3s}
+@keyframes st-bar{from{width:0}}
+@keyframes st-run{from{translate:0 -6px;opacity:0}25%{opacity:1}to{translate:0 22px;opacity:0}}
+@keyframes st-stage{0%{opacity:0;translate:0 5px}15%,85%{opacity:1;translate:none}100%{opacity:0;translate:0 -5px}}
+@keyframes st-fill{to{width:100%}}
+@keyframes st-day{from{background-color:transparent;border-color:rgba(201,146,62,.2)}}
+@keyframes st-pop{from{scale:.3;opacity:0}}
+@keyframes st-up{from{opacity:0;translate:0 14px}}
+@keyframes st-msg{from{max-height:0;margin-top:0;padding-top:0;padding-bottom:0;opacity:0}}
+@keyframes st-tap{50%{scale:.9;filter:brightness(1.25)}}
+.why-end{margin-top:22px;color:#e6e6e6;font-size:15px}
+.why-l{display:none;list-style:none;padding:0} /* desktop: the four reasons as a list next to the story */
+.why-l button{display:flex;align-items:baseline;gap:14px;width:100%;padding:13px 16px;border-radius:14px;text-align:left;color:rgba(255,255,255,.4);transition:color .3s,background-color .3s}
+.why-l button:hover{color:#fff}
+.why-l .on{color:#fff;background:rgba(201,146,62,.12)}
+.why-l span{font:900 24px/1 Inter,system-ui,sans-serif;color:var(--bg);-webkit-text-stroke:1.2px var(--gold);paint-order:stroke fill}
+.why-l b{font:800 24px/1.15 Inter,system-ui,sans-serif;letter-spacing:-.02em}
+
+/* teams + jobs: what I built in the middle, teams it works for on top, real AI jobs below, every rope = proof. Tap (mouse: hover) one: its ropes pull tight */
+.jobs{padding:8px 18px 96px}
+.jobs h2{margin-bottom:10px}
+.jb-sub{color:#cfcfcf;font-size:15px}
+.jb-web{position:relative;margin-top:30px}
+.jb-nodes{position:relative;z-index:2;display:grid;grid-template-columns:repeat(5,1fr);margin:0 -12px}
+.jb-n{display:flex;flex-direction:column;align-items:center;min-width:0;transition:opacity .35s;-webkit-tap-highlight-color:transparent}
+.jb-av{display:grid;place-items:center;width:54px;height:54px;border-radius:50%;overflow:hidden;background:#15120e;box-shadow:0 0 0 1.5px var(--gold);font-size:24px;color:var(--gold);transition:box-shadow .35s}
+.jb-av img{width:100%;height:100%;object-fit:cover}
+.jb-av .full{scale:1.1} /* Aureyu: its own dark tile fills the whole circle, no black ring */
+.jb-n b{margin-top:8px;font:800 clamp(8.5px,2.5vw,9.5px)/1 Inter,system-ui,sans-serif;white-space:nowrap}
+.jb-n small{margin-top:3px;font:600 clamp(8px,2.4vw,9px)/1 Inter,system-ui,sans-serif;color:#9a9a9a;white-space:nowrap}
+.jb-n:after,.jb-n:before{content:"";width:8px;height:8px;margin-top:8px;border-radius:50%;background:var(--gold)}
+.jb-n:before{margin:0 0 8px}
+.jb-tags{position:relative;z-index:2;display:flex;flex-wrap:wrap;justify-content:center;gap:20px 10px;margin-top:104px}
+.jb-teams{margin:0 0 96px}
+.jb-k{display:block;margin-bottom:16px;text-align:center;font:800 10px/1 Inter,system-ui,sans-serif;letter-spacing:.24em;color:#8a8a8a}
+.jb-jobs+.jb-k{margin:20px 0 0}
+.jb-t{position:relative;padding:10px 13px;border-radius:11px;background:#14110d;border:1px solid rgba(201,146,62,.55);font:800 13px/1 Inter,system-ui,sans-serif;letter-spacing:-.01em;white-space:nowrap;transition:background-color .3s,color .3s,border-color .3s,box-shadow .3s}
+.jb-t:before{content:"";position:absolute;left:50%;top:-5px;width:8px;height:8px;translate:-50% 0;border-radius:50%;background:var(--bg);border:2px solid var(--gold)}
+.jb-t.on{background:var(--gold);color:#0A0A0A;border-color:var(--gold);box-shadow:0 8px 26px rgba(201,146,62,.55)}
+.jb-t.on:before{background:var(--gold);border-color:#0A0A0A}
+.jb-d{display:inline-flex;align-items:center;gap:7px}
+.jb-d:before{top:auto;bottom:-5px} /* a team's peg sits under it: its ropes go down to the builds */
+.jb-d .ic{font-size:15px;color:var(--gold);transition:color .3s}
+.jb-d.on .ic{color:#0A0A0A}
+.jobs.pick .jb-t:not(.on){color:rgba(255,255,255,.32);border-color:rgba(201,146,62,.2)}
+.jobs.pick .jb-t:not(.on):before{border-color:rgba(201,146,62,.3)}
+.jobs.pick .jb-n:not(.on){opacity:.3}
+.jobs.pick .jb-n.on .jb-av{box-shadow:0 0 0 2.5px var(--gold),0 0 26px rgba(201,146,62,.8)}
+.jb-ropes{position:absolute;inset:0;z-index:1;width:100%;height:100%;overflow:visible;pointer-events:none}
+.jb-ropes path{fill:none;stroke-width:2}
+.jb-ropes .b{stroke:rgba(201,146,62,.5);stroke-linecap:round}
+.jb-ropes .f{stroke:rgba(0,0,0,.45);stroke-dasharray:2 2.6}
+.jb-ropes g{transition:opacity .35s}
+.jb-ropes .hot{filter:drop-shadow(0 0 5px rgba(232,184,102,.9))}
+.jb-ropes .hot path{stroke-width:3.2}.jb-ropes .hot .b{stroke:#E8B866}.jb-ropes .hot .f{stroke:rgba(110,74,23,.8);stroke-dasharray:2.4 2.4}
+.jobs.pick .jb-ropes g:not(.hot){opacity:.13}
+.jb-pc{margin-top:26px;padding:16px;border-radius:16px;background:linear-gradient(160deg,rgba(255,255,255,.1),rgba(255,255,255,.03));border:1px solid rgba(201,146,62,.45);box-shadow:0 20px 40px rgba(0,0,0,.5);animation:st-up .45s var(--ease)}
+.jb-pc small{display:block;font:800 10px/1 Inter,system-ui,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.jb-pc button{display:flex;align-items:center;gap:10px;width:100%;margin-top:12px;text-align:left;font-size:14px;line-height:1.4;color:#e4e4e4}
+.jb-pc button>span+span{flex:1}
+.jb-pc b{display:block;color:#fff}
+.jb-pc .jb-av{flex:none;width:28px;height:28px;font-size:15px;box-shadow:0 0 0 1.2px var(--gold)}
+.jb-pc button>.ic{font-size:16px;color:var(--gold)}
+.jb-pc p{margin-top:8px;font-size:14px;line-height:1.45;color:#cfcfcf}
+.jobs h2 em{white-space:nowrap}
+@media (max-width:899px){.jb-pc{position:fixed;left:12px;right:12px;bottom:12px;z-index:30;max-height:46vh;overflow:auto;background:#191612}} /* phone: the proof slides up from the bottom, the ropes stay in view */
+.pull{position:relative;background:#fff;color:#0A0A0A;padding:112px 18px 64px;overflow:hidden}
+.lb{font:700 11px/1 Inter,system-ui,sans-serif;letter-spacing:.24em;color:#888}
+.pull h2{font-size:min(52px,13.3vw);margin-top:14px;letter-spacing:-.045em}
+.pull h2 em{color:var(--goldink);font-size:1.02em}
+.stage{position:relative;width:calc(100% + 36px);max-width:620px;margin:16px -18px 0;aspect-ratio:390/330;container-type:inline-size}
+.stage>svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible} /* the hand only, not the click-me arrow */
+.handg{transition:translate 1.4s var(--ease) .25s,opacity 1s var(--ease) .25s}
+.js .pull:not(.in) .handg{translate:-170px 0;opacity:0}
+.strings path{stroke-dasharray:260;transition:stroke-dashoffset 1.1s var(--ease) 1.05s}
+.js .pull:not(.in) .strings path{stroke-dashoffset:260}
+.w{position:absolute;z-index:1;font:900 5.64cqw/1 Inter,system-ui,sans-serif;letter-spacing:-.02em;pointer-events:none;opacity:0;transform:translate(var(--dx,0),var(--dy,0)) rotate(var(--r)) scale(.2);
+  transition:transform .45s cubic-bezier(.5,0,.75,0),opacity .25s .15s}
+.armed .w{opacity:1;transform:rotate(var(--r));transition:transform .75s var(--spring) var(--d),opacity .2s var(--d)}
+.pill{position:absolute;z-index:2;left:73.85%;top:36.97%;translate:-50% 0;height:12.82cqw;padding:0 5cqw;border-radius:999px;display:flex;align-items:center;justify-content:center;white-space:nowrap;
+  background:linear-gradient(#2a2a2a,#0A0A0A);color:#fff;font:900 4.1cqw/1 Inter,system-ui,sans-serif;letter-spacing:.04em;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none;
+  box-shadow:0 8px 20px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.18);transition:scale .9s var(--spring) .95s,opacity .5s .95s}
+.js .pull:not(.in) .pill{scale:.3;opacity:0}
+.pill:active{cursor:grabbing}
+.hint{font:700 12px/1 Inter,system-ui,sans-serif;letter-spacing:.18em;color:#888;text-align:center;margin-top:6px}
+/* a quiet "click me" next to the button: fades in and out until the first touch */
+.nudge{position:absolute;z-index:1;left:78%;top:54%;display:flex;flex-direction:column;align-items:flex-end;color:#8a8a8a;pointer-events:none;opacity:0}
+.nudge svg{width:10cqw;height:6.6cqw;margin:0 6cqw 1.6cqw 0;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.nudge i{font:italic 600 4.8cqw/1 'Cormorant Garamond',serif;white-space:nowrap}
+.js .pull.in .stage:not(.armed):not(.touched) .nudge{animation:nudge 3.6s ease-in-out 2.8s infinite}
+@keyframes nudge{0%,100%{opacity:0;translate:0 3px}35%,70%{opacity:.85;translate:none}}
+.zoom{position:fixed;z-index:15;background:var(--bg);pointer-events:none}
+
+/* contact */
+.ct{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:120px 22px 170px}
+/* the end: my logo swings on a cord. Left of it reads LET'S TALK!, right of it LET'S BUILD, so every swing wipes the headline */
+.pend{--len:200px;position:relative;align-self:stretch;height:calc(var(--len) + 92px);margin:0 -22px 26px;overflow:hidden}
+.pw{position:absolute;left:0;right:0;top:var(--len);translate:0 -50%;display:grid;justify-items:center;font:900 clamp(40px,12.6vw,108px)/1 Inter,system-ui,sans-serif;letter-spacing:-.05em}
+.pw b{grid-area:1/1;white-space:nowrap}
+.pw .pb{color:var(--gold)}
+.pr{position:absolute;left:50%;top:0}
+.pr:before{content:"";position:absolute;left:-5px;top:-5px;width:10px;height:10px;border-radius:50%;background:#fff}
+.pr i{position:absolute;left:-1px;top:0;width:2px;height:var(--len);background:linear-gradient(rgba(255,255,255,.08),rgba(255,255,255,.6))}
+.bob{position:absolute;left:0;top:var(--len);display:grid;place-items:center;width:66px;height:66px;translate:-50% -50%;border-radius:18px;background:#fff;box-shadow:0 22px 40px rgba(0,0,0,.6)}
+.bob svg{width:74%;height:74%}
+.pt{position:absolute;left:0;right:0;bottom:0;text-align:center;font:700 11px/1 Inter,system-ui,sans-serif;letter-spacing:.32em;color:rgba(255,255,255,.55)}
+.ct p{color:#ddd;font-size:16px;margin-bottom:26px;max-width:28em}
+.bts{display:grid;gap:12px}
+.bt{display:flex;align-items:center;justify-content:center;gap:10px;height:52px;padding:0 26px;border-radius:8px;font:800 16px/1 Inter,system-ui,sans-serif;transition:transform .4s var(--ease),background-color .3s,border-color .3s}
+.bt.g{background:var(--gold);color:#0A0A0A}.bt.o{border:1.5px solid rgba(255,255,255,.5)}
+.bt:hover{transform:translateY(-2px)}.bt.o:hover{border-color:#fff}.bt:active{transform:scale(.97)}
+.bt svg{width:20px;height:20px}
+.tbc{position:absolute;left:0;right:0;bottom:56px;text-align:center}
+.tbc b{display:block;font:900 29px/1 Inter,system-ui,sans-serif;letter-spacing:-.01em;color:var(--bg);-webkit-text-stroke:2px rgba(255,255,255,.8);paint-order:stroke fill;margin-bottom:8px;
+  transition:letter-spacing 2.2s var(--ease) .5s,opacity 1.6s var(--ease) .5s}
+.js .ct:not(.in) .tbc b{letter-spacing:.45em;opacity:0}
+.tbc a{color:var(--mute);font-size:13px}
+
+
+/* video player */
+dialog{border:0;padding:0;color:#fff;max-width:none;max-height:none}
+dialog::backdrop{background:rgba(5,5,5,.82);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);opacity:0;transition:opacity .5s,overlay .5s allow-discrete,display .5s allow-discrete}
+dialog[open]::backdrop{opacity:1}
+@starting-style{dialog[open]::backdrop{opacity:0}}
+.x{position:absolute;right:16px;top:max(16px,env(safe-area-inset-top));z-index:2;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-size:18px;
+  background:rgba(10,10,10,.6);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+#player{background:none;margin:auto;overflow:visible}
+#player.closing::backdrop{opacity:0}
+#player video{display:block;width:min(88vw,47svh,440px);aspect-ratio:9/16;object-fit:cover;border-radius:16px;background:#000;transform-origin:0 0;box-shadow:0 30px 90px rgba(0,0,0,.6)}
+#player .x{right:0;top:-52px;transition:opacity .4s .35s}
+@starting-style{#player[open] .x{opacity:0}}
+#player.closing .x{opacity:0;transition-delay:0s}
+
+@media (min-width:900px){
+  .top{padding:20px 56px 16px}
+  .chips{order:0;width:auto}
+  .hero{height:100vh;min-height:640px}
+  .welcome{left:auto;right:56px;top:96px;bottom:auto;width:min(34%,460px);text-align:right} /* top right: the long island's tower stands top left */
+  .welcome b{font-size:60px}.welcome span{font-size:17px}
+  .bd{width:38px;height:38px;border-radius:10px;font-size:19px}
+  .tg{padding:6px 11px}.tg b{font-size:10.5px}.tg small{font-size:10px}.go{font-size:11px}
+  .intro{display:flex;align-items:center;justify-content:space-between;gap:40px;padding:40px 56px 0}
+  .intro h1{font-size:68px}
+  .intro p{font-size:17px}
+  .orb{position:relative;display:block;flex:none;width:460px;height:460px;margin-right:20px}
+  .rows{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:36px 56px;padding:40px 56px 110px}
+  [data-f=auto] .row.auto,[data-f=video] .row.vid{grid-column:1/-1}
+  .rt{font-size:26px}
+  .rail{gap:12px;margin:-6px 0 0 -6px;padding:6px 6px 10px}
+  .poster{width:140px;height:210px}.reel{width:122px;height:217px}
+  .reel b{font-size:13px}.pl{width:40px;height:40px;font-size:16px}
+  .why{display:grid;grid-template-columns:minmax(0,1fr) 400px;grid-template-rows:1fr auto auto auto auto 1fr;column-gap:80px;padding:40px 56px 110px}
+  .why .lb{grid-area:2/1}.why h2{grid-area:3/1;font-size:72px;margin:18px 0 0}.why-end{grid-area:5/1;align-self:start;font-size:18px;margin:24px 0 0 16px}
+  .why-l{display:grid;gap:4px;grid-area:4/1;max-width:600px;margin-top:30px}
+  .st{grid-area:1/2/7/3}
+  .jobs{display:grid;grid-template-columns:440px minmax(0,1fr);grid-template-rows:1fr auto auto auto 270px 1fr;column-gap:56px;padding:40px 56px 120px}
+  .jobs .lb{grid-area:2/1}.jobs h2{grid-area:3/1;font-size:64px;margin:18px 0 14px}.jb-sub{grid-area:4/1;font-size:18px}
+  .jb-web{grid-area:1/2/7/3;margin:0}.jb-nodes{margin:0}
+  .jb-pc{grid-area:5/1;align-self:start;margin-top:30px} /* the proof stays in view next to the ropes; its row has a fixed height, so the centred text never jumps */
+  .jb-av{width:68px;height:68px;font-size:28px}.jb-n b{font-size:12.5px}.jb-n small{font-size:11.5px}
+  .jb-tags{margin-top:120px;gap:24px 12px}.jb-teams{margin:0 0 110px}.jb-t{font-size:15px;padding:12px 15px}.jb-k{font-size:11px}
+  .pull{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);grid-template-areas:"txt stage" "hint stage";align-items:center;column-gap:40px;min-height:100vh;padding:120px 80px}
+  .ptxt{grid-area:txt;align-self:end}.stage{grid-area:stage;width:88%;margin:0 0 0 auto}.hint{grid-area:hint;align-self:start;text-align:left;margin-top:48px}
+  .lb{font-size:14px}
+  .pull h2{font-size:clamp(64px,6.6vw,96px);margin-top:20px}
+  .ct{align-items:center;text-align:center}
+  .pend{--len:270px;margin:0 0 30px}.bob{width:88px;height:88px;border-radius:24px}.pt{font-size:13px}
+  .ct p{font-size:20px;margin-bottom:40px}
+  .bts{grid-auto-flow:column;gap:14px}.bt{height:58px;font-size:17px}
+  .tbc{bottom:70px}.tbc b{font-size:40px;-webkit-text-stroke-width:2.4px}.tbc a{font-size:15px}
+}
+@media (prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition-duration:.01ms!important;transition-delay:0s!important}.st-bars .on b{width:100%}}
+</style></head><body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="t-rw" viewBox="0 0 24 24"><path fill="currentColor" d="M.113 10.27A13.026 13.026 0 000 11.48h18.23c-.064-.125-.15-.237-.235-.347-3.117-4.027-4.793-3.677-7.19-3.78-.8-.034-1.34-.048-4.524-.048-1.704 0-3.555.005-5.358.01-.234.63-.459 1.24-.567 1.737h9.342v1.216H.113v.002zm18.26 2.426H.009c.02.326.05.645.094.961h16.955c.754 0 1.179-.429 1.315-.96zm-17.318 4.28s2.81 6.902 10.93 7.024c4.855 0 9.027-2.883 10.92-7.024H1.056zM11.988 0C7.5 0 3.593 2.466 1.531 6.108l4.75-.005v-.002c3.71 0 3.849.016 4.573.047l.448.016c1.563.052 3.485.22 4.996 1.364.82.621 2.007 1.99 2.712 2.965.654.902.842 1.94.396 2.934-.408.914-1.289 1.458-2.353 1.458H.391s.099.42.249.886h22.748A12.026 12.026 0 0024 12.005C24 5.377 18.621 0 11.988 0z"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></symbol>
+  <symbol id="i-team" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5"/><circle cx="16.6" cy="9.2" r="2.6"/><path d="M15.6 14.2c2.6-.3 4.6 1.4 5 4.3"/></symbol>
+  <symbol id="i-film" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10 9.2v5.6l4.8-2.8z"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5zM4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5l8.5 6.5 8.5-6.5"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></symbol>
+  <symbol id="l-tg" viewBox="0 0 24 24"><path fill="#26A5E4" d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></symbol>
+  <symbol id="l-wa" viewBox="0 0 24 24"><path fill="#25D366" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></symbol>
+  <symbol id="l-sg" viewBox="0 0 24 24"><path fill="#3A76F0" d="M12 0q-.934 0-1.83.139l.17 1.111a11 11 0 0 1 3.32 0l.172-1.111A12 12 0 0 0 12 0M9.152.34A12 12 0 0 0 5.77 1.742l.584.961a10.8 10.8 0 0 1 3.066-1.27zm5.696 0-.268 1.094a10.8 10.8 0 0 1 3.066 1.27l.584-.962A12 12 0 0 0 14.848.34M12 2.25a9.75 9.75 0 0 0-8.539 14.459c.074.134.1.292.064.441l-1.013 4.338 4.338-1.013a.62.62 0 0 1 .441.064A9.7 9.7 0 0 0 12 21.75c5.385 0 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25m-7.092.068a12 12 0 0 0-2.59 2.59l.909.664a11 11 0 0 1 2.345-2.345zm14.184 0-.664.909a11 11 0 0 1 2.345 2.345l.909-.664a12 12 0 0 0-2.59-2.59M1.742 5.77A12 12 0 0 0 .34 9.152l1.094.268a10.8 10.8 0 0 1 1.269-3.066zm20.516 0-.961.584a10.8 10.8 0 0 1 1.27 3.066l1.093-.268a12 12 0 0 0-1.402-3.383M.138 10.168A12 12 0 0 0 0 12q0 .934.139 1.83l1.111-.17A11 11 0 0 1 1.125 12q0-.848.125-1.66zm23.723.002-1.111.17q.125.812.125 1.66c0 .848-.042 1.12-.125 1.66l1.111.172a12.1 12.1 0 0 0 0-3.662M1.434 14.58l-1.094.268a12 12 0 0 0 .96 2.591l-.265 1.14 1.096.255.36-1.539-.188-.365a10.8 10.8 0 0 1-.87-2.35m21.133 0a10.8 10.8 0 0 1-1.27 3.067l.962.584a12 12 0 0 0 1.402-3.383zm-1.793 3.848a11 11 0 0 1-2.345 2.345l.664.909a12 12 0 0 0 2.59-2.59zm-19.959 1.1L.357 21.48a1.8 1.8 0 0 0 2.162 2.161l1.954-.455-.256-1.095-1.953.455a.675.675 0 0 1-.81-.81l.454-1.954zm16.832 1.769a10.8 10.8 0 0 1-3.066 1.27l.268 1.093a12 12 0 0 0 3.382-1.402zm-10.94.213-1.54.36.256 1.095 1.139-.266c.814.415 1.683.74 2.591.961l.268-1.094a10.8 10.8 0 0 1-2.35-.869zm3.634 1.24-.172 1.111a12.1 12.1 0 0 0 3.662 0l-.17-1.111q-.812.125-1.66.125a11 11 0 0 1-1.66-.125"/></symbol>
+  <symbol id="l-ig" viewBox="0 0 24 24"><path fill="currentColor" d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077"/></symbol>
+  <!-- simple-icons (CC0): socials + the tools in My home -->
+  <symbol id="l-tt" viewBox="0 0 24 24"><path fill="currentColor" d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></symbol>
+  <symbol id="l-yt" viewBox="0 0 24 24"><path fill="currentColor" d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></symbol>
+  <symbol id="l-li" viewBox="0 0 24 24"><path fill="currentColor" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></symbol>
+  <symbol id="l-gh" viewBox="0 0 24 24"><path fill="currentColor" d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></symbol>
+  <symbol id="t-sb" viewBox="0 0 24 24"><path fill="currentColor" d="M11.9 1.036c-.015-.986-1.26-1.41-1.874-.637L.764 12.05C-.33 13.427.65 15.455 2.409 15.455h9.579l.113 7.51c.014.985 1.259 1.408 1.873.636l9.262-11.653c1.093-1.375.113-3.403-1.645-3.403h-9.642z"/></symbol>
+  <symbol id="t-vc" viewBox="0 0 24 24"><path fill="currentColor" d="M24 22.525H0l12-21.05 12 21.05z"/></symbol>
+  <symbol id="t-no" viewBox="0 0 24 24"><path fill="currentColor" d="M4.459 4.208c.746.606 1.026.56 2.428.466l13.215-.793c.28 0 .047-.28-.046-.326L17.86 1.968c-.42-.326-.981-.7-2.055-.607L3.01 2.295c-.466.046-.56.28-.374.466zm.793 3.08v13.904c0 .747.373 1.027 1.214.98l14.523-.84c.841-.046.935-.56.935-1.167V6.354c0-.606-.233-.933-.748-.887l-15.177.887c-.56.047-.747.327-.747.933zm14.337.745c.093.42 0 .84-.42.888l-.7.14v10.264c-.608.327-1.168.514-1.635.514-.748 0-.935-.234-1.495-.933l-4.577-7.186v6.952L12.21 19s0 .84-1.168.84l-3.222.186c-.093-.186 0-.653.327-.746l.84-.233V9.854L7.822 9.76c-.094-.42.14-1.026.793-1.073l3.456-.233 4.764 7.279v-6.44l-1.215-.139c-.093-.514.28-.887.747-.933zM1.936 1.035l13.31-.98c1.634-.14 2.055-.047 3.082.7l4.249 2.986c.7.513.934.653.934 1.213v16.378c0 1.026-.373 1.634-1.68 1.726l-15.458.934c-.98.047-1.448-.093-1.962-.747l-3.129-4.06c-.56-.747-.793-1.306-.793-1.96V2.667c0-.839.374-1.54 1.447-1.632z"/></symbol>
+  <symbol id="t-nx" viewBox="0 0 24 24"><path fill="currentColor" d="M18.665 21.978C16.758 23.255 14.465 24 12 24 5.377 24 0 18.623 0 12S5.377 0 12 0s12 5.377 12 12c0 3.583-1.574 6.801-4.067 9.001L9.219 7.2H7.2v9.596h1.615V9.251l9.85 12.727Zm-3.332-8.533 1.6 2.061V7.2h-1.6v6.245Z"/></symbol>
+  <symbol id="t-gm" viewBox="0 0 24 24"><path fill="currentColor" d="M11.04 19.32Q12 21.51 12 24q0-2.49.93-4.68.96-2.19 2.58-3.81t3.81-2.55Q21.51 12 24 12q-2.49 0-4.68-.93a12.3 12.3 0 0 1-3.81-2.58 12.3 12.3 0 0 1-2.58-3.81Q12 2.49 12 0q0 2.49-.96 4.68-.93 2.19-2.55 3.81a12.3 12.3 0 0 1-3.81 2.58Q2.49 12 0 12q2.49 0 4.68.96 2.19.93 3.81 2.55t2.55 3.81"/></symbol>
+  <symbol id="t-el" viewBox="0 0 24 24"><path fill="currentColor" d="M4.6035 0v24h4.9317V0zm9.8613 0v24h4.9317V0z"/></symbol>
+  <symbol id="t-ff" viewBox="0 0 24 24"><path fill="currentColor" d="M21.72 17.91V6.5l-.53-.49L9.05 18.52l-1.29-.06L24 1.53l-.33-.95-11.93 1-5.75 6.6v-.23l4.7-5.39-1.38-.77-9.11.77v2.85l1.91.46v.01l.19-.01-.56.66v10.6c.609-.126 1.22-.241 1.83-.36L14.12 5.22l.83-.04L0 21.44l9.67.82 1.35-.77 6.82-6.74v2.15l-5.72 5.57 11.26.95.35-.94v-3.16l-3.29-.18c.434-.403.858-.816 1.28-1.23z"/></symbol>
+  <symbol id="t-as" viewBox="0 0 24 24"><path fill="currentColor" d="M12.363 2.54a3.136 3.136 0 0 0-.376.022 2.864 2.864 0 0 0-1.589.828c-.562.58-.82 1.115-.773 1.943-.01.264.193 1.023.272 1.274 1.115 3.546 2.09 6.75 3.26 10.279.08.246.168.486.267.72.02.047.035.046.048-.004.077-.297.174-.612.29-.945.894-2.576 1.772-5.14 2.633-7.696a.345.345 0 0 0 .004-.217 163.054 163.054 0 0 0-1.49-4.572 2.603 2.603 0 0 0-.704-.933c-.55-.46-1.166-.694-1.842-.7Zm9.078.117a2.734 2.734 0 0 0-2.878 1.828l-4.576 13.289a2.734 2.734 0 0 0 1.695 3.475l.12.04a2.734 2.734 0 0 0 3.475-1.694L23.85 6.307a2.734 2.734 0 0 0-1.695-3.476c-.233-.1-.506-.124-.716-.174ZM12.375 3.96a1.396 1.396 0 1 1 0 2.791 1.395 1.395 0 0 1 0-2.79zm8.809.07a1.402 1.402 0 1 1 0 2.803 1.402 1.402 0 0 1 0-2.803zM5.419 7.605a2.853 2.853 0 0 0-.468.052 2.683 2.683 0 0 0-1.337.627 2.62 2.62 0 0 0-.924 1.833 3.808 3.808 0 0 0 0 .648 2.52 2.52 0 0 0 .673 1.52c.221.238.465.454.732.648 3.043 2.21 6.08 4.43 9.108 6.664a.78.78 0 0 0 .158.089c.03-.043.032-.098.007-.167a17.409 17.409 0 0 0-.317-1.066 532.752 532.752 0 0 1-2.02-6.251 41.91 41.91 0 0 0-.497-1.477c-.967-.849-2.078-1.6-3.023-2.302A3.848 3.848 0 0 0 6.153 7.7a2.388 2.388 0 0 0-.734-.094Zm.02 1.424a1.398 1.398 0 1 1 0 2.796 1.398 1.398 0 0 1 0-2.796zm-2.458 6.792c-.733-.006-1.375.202-1.927.622a2.72 2.72 0 0 0-.95 1.45 2.78 2.78 0 0 0-.09 1.04 2.74 2.74 0 0 0 .695 1.583c.664.578 1.26.85 2 .945 1.42-.005 2.84-.012 4.262-.02h.418c2.277-.003 4.513-.002 6.706.003.148.005.28.003.392-.01.06-.005.091-.031.092-.077a10.656 10.656 0 0 0-.834-.653 488.746 488.746 0 0 1-6.57-4.815.236.236 0 0 0-.14-.047c-1.34-.003-2.691-.01-4.054-.02zm-.19 1.418a1.402 1.402 0 1 1 0 2.803 1.402 1.402 0 0 1 0-2.803zm13.874.002a1.4 1.4 0 1 1 0 2.8 1.4 1.4 0 0 1 0-2.8z"/></symbol>
+  <symbol id="t-gl" viewBox="0 0 24 24"><path fill="currentColor" d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></symbol>
+  <defs>
+    <linearGradient id="gMetal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F7DFAE"/><stop offset=".5" stop-color="#D49E4C"/><stop offset="1" stop-color="#9A6726"/></linearGradient>
+    <linearGradient id="gLine" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E9C384"/><stop offset="1" stop-color="#8E6125"/></linearGradient>
+    <clipPath id="cHex"><path d="M48 6 89.6 30v48L48 102 6.4 78V30z"/></clipPath>
+  </defs>
+  <symbol id="i-ext" viewBox="0 0 24 24"><path d="M7 17 17 7M8.5 7H17v8.5"/></symbol>
+  <symbol id="i-trophy" viewBox="0 0 24 24"><path d="M7.5 4h9v5.5a4.5 4.5 0 0 1-9 0z"/><path d="M7.5 6H4.8v1.2A3.3 3.3 0 0 0 8 10.5M16.5 6h2.7v1.2A3.3 3.3 0 0 1 16 10.5"/><path d="M12 14v3.6M8.6 20.5h6.8M9.8 17.6h4.4"/></symbol>
+  <symbol id="i-live" viewBox="0 0 24 24"><circle class="dot" cx="12" cy="12" r="2.4" fill="currentColor" stroke="none"/><path d="M8.2 15.8a5.4 5.4 0 0 1 0-7.6M15.8 8.2a5.4 5.4 0 0 1 0 7.6M5.3 18.7a9.5 9.5 0 0 1 0-13.4M18.7 5.3a9.5 9.5 0 0 1 0 13.4"/></symbol>
+  <symbol id="i-inbox" viewBox="0 0 24 24"><path d="M3.5 13.5h4.6l1.6 2.6h4.6l1.6-2.6h4.6"/><path d="M6.2 5h11.6l2.7 8.5V19H3.5v-5.5z"/></symbol>
+  <symbol id="i-lang" viewBox="0 0 24 24"><path d="m5 8 6 6M4 14l6-6 2-3M2 5h12M7 2h1M22 22l-5-10-5 10M14 18h6"/></symbol>
+  <symbol id="i-reply" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"/><path d="M12 8.4l.9 2.6 2.6.9-2.6.9-.9 2.6-.9-2.6-2.6-.9 2.6-.9z" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-pc" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12.5" rx="2"/><path d="M8.5 20.5h7M12 16.5v4"/></symbol>
+  <symbol id="i-ok" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M8.2 12.3l2.6 2.6 5-5.2"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><path d="M10 6.5h10M10 12h10M10 17.5h10M3.8 6.5l1.4 1.4 2.4-2.6M3.8 12l1.4 1.4 2.4-2.6M3.8 17.5l1.4 1.4 2.4-2.6"/></symbol>
+  <symbol id="i-cards" viewBox="0 0 24 24"><rect x="3.5" y="7" width="13.5" height="13" rx="2"/><path d="M7.5 3.5h11a2 2 0 0 1 2 2V16"/><path d="M7 13.4l2.2 2.2 4.2-4.4"/></symbol>
+  <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></symbol>
+  <symbol id="i-camera" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2.5"/><path d="M8.5 7l1.6-2.5h3.8L15.5 7"/><circle cx="12" cy="13.5" r="3.4"/></symbol>
+  <symbol id="i-coin" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M14.6 9.2c-.5-.9-1.5-1.4-2.6-1.4-1.6 0-2.7.9-2.7 2.1 0 2.9 5.6 1.4 5.6 4.3 0 1.2-1.2 2.1-2.9 2.1-1.2 0-2.2-.5-2.7-1.4M12 6.3v1.5M12 16.4v1.4"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24"><path d="M4 12 20 4l-4 16-4-6z"/><path d="M12 14l8-10"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7.5V12l3 2"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0C18.5 15.4 12 21 12 21z"/><circle cx="12" cy="10" r="2.4"/></symbol>
+  <symbol id="i-bot" viewBox="0 0 24 24"><rect x="5" y="8" width="14" height="11" rx="3"/><path d="M12 8V4.5M9.5 13h.01M14.5 13h.01M3 13v2M21 13v2"/></symbol>
+  <symbol id="i-food" viewBox="0 0 24 24"><path d="M6 3v5a2.5 2.5 0 0 0 5 0V3M8.5 3v18M17.5 21V3c-2 1.5-3 4-3 7.5h3"/></symbol><symbol id="i-cal" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></symbol><symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11.5 12 5l8 6.5V20H4z"/><path d="M10 20v-5h4v5"/></symbol>
+</svg>
+
+<div id="loader" class="loader" aria-hidden="true">
+  <svg><polygon class="halo"/><polygon class="line"/></svg>
+  <div class="ld-mark" id="ld-mark"><b>ENRICO LIMAN</b><span>AI AUTOMATION BUILDER</span></div>
+  <div class="ld-n" id="ld-n">0</div>
+</div>
+
+<header class="top">
+  <a class="card" id="card" href="#top" aria-label="Enrico Jonathan Liman, AI Automation Builder"><img src="media/avatar.jpg" alt="" width="38" height="38"><span><b>ENRICO LIMAN</b><small>AI Automation Builder</small></span></a>
+  <nav class="chips" aria-label="Filter"><button class="on" type="button" data-f="">All</button><button type="button" data-f="auto">Automations</button><button type="button" data-f="video">Videos</button></nav>
+  <span class="right"><a class="cta" id="cta" href="#hire">HIRE ME</a></span>
+</header>
+
+<section class="hero" id="top">
+  <div id="isle" aria-label="Enrico's island. Tap a building to go inside."></div>
+  <div class="welcome"><b>Welcome to my <em>island.</em></b><span>Every door opens a real project.</span></div>
+  <div class="tap"><i></i><span class="t-touch">Tap a building</span><span class="t-mouse">Click a building</span></div>
+</section>
+
+<main class="below">
+  <section class="intro" data-rv>
+    <div>
+      <div class="orig rv"><i></i>ENRICO ORIGINAL</div>
+      <h1 class="rv" style="--d:.08s">I build with <em>Claude.</em><span class="mascot" data-cell="6"></span></h1>
+      <p class="rv" style="--d:.16s">AI assistants that do the boring work. Videos made in code.</p>
+      <div class="meta rv" style="--d:.24s"><b>700K views in 1 day</b><span>50+ users in week 1</span><span class="box">AI AGENT</span></div>
+    </div>
+    <div class="orb rv" id="orb" style="--d:.2s" role="img"><i class="r1"></i><i class="r2"></i><span class="core"><span class="mascot" data-cell="9"></span></span><div class="spin"></div><div class="spin"></div></div>
+  </section>
+
+  <section class="rows" id="rows">
+    <div class="row auto" data-rv><h2 class="rt rv"><span class="mascot" data-cell="4"></span>Built with <em>Claude</em></h2><div class="rail" id="posters"></div></div>
+    <div class="row vid" data-rv><h2 class="rt rv">Videos I <em>make</em></h2><div class="rail" id="reels"></div></div>
+  </section>
+
+  <section class="why" id="why" data-rv>
+    <div class="lb rv">WHY ME</div>
+    <h2 class="rv" style="--d:.08s">Why hire <em>me?</em></h2>
+    <ol class="why-l rv" style="--d:.12s"></ol>
+    <div class="st wait rv" id="st" style="--d:.16s">
+      <div class="st-bars" aria-hidden="true"><i class="on"><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i></div>
+      <div class="st-deck">
+        <article class="st-s on" aria-label="Reason 1 of 4">
+          <div class="st-h"><span>01</span><b>I ship fast.</b></div>
+          <div class="st-v">
+            <div class="st-cal" aria-hidden="true">
+              <div><span>W1</span><i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i><i style="--i:3"></i><i style="--i:4"></i><i style="--i:5"></i><i style="--i:6"></i></div>
+              <div><span>W2</span><i style="--i:7"></i><i style="--i:8"></i><i style="--i:9"></i><i style="--i:10"></i><i style="--i:11"></i><i style="--i:12"></i><i class="st-live"><img src="media/smartkartoffel-icon.png" alt=""></i></div>
+            </div>
+            <a class="st-app" href="https://smartkartoffel.com" target="_blank" rel="noopener"><img src="media/smartkartoffel-icon.png" alt="" width="44" height="44"><span><b>SmartKartoffel</b><small>smartkartoffel.com</small></span><span class="st-pill">LIVE</span></a>
+          </div>
+          <p class="st-c"><strong>2 weeks</strong> from idea to live app. No coding background.</p>
+        </article>
+        <article class="st-s" aria-label="Reason 2 of 4">
+          <div class="st-h"><span>02</span><b>I automate the daily tasks.</b></div>
+          <div class="st-v">
+            <div class="st-tg">
+              <div class="st-tgh"><img src="media/robert-avatar.jpg" alt="" width="34" height="34"><span><b>Robert</b><small>my AI agent</small></span><svg role="img" aria-label="Telegram"><use href="#l-tg"/></svg></div>
+              <div class="st-chat">
+                <div class="st-m" style="--i:0"><p class="st-bh"><span class="mascot" data-cell="2.6"></span>Claude news<span class="st-tag">BIG</span><time>07:00</time></p><p>What's new, who it helps, my post idea.</p></div>
+                <div class="st-m" style="--i:1"><p class="st-bh"><svg class="ic"><use href="#i-clock"/></svg>Send the invoice<time>09:00</time></p><p class="st-k"><span class="on">Done</span><span>+1h</span><span>Tonight 21:30</span></p></div>
+                <div class="st-m" style="--i:2"><p class="st-bh"><svg class="ic"><use href="#i-cards"/></svg>Client message<time>12:00</time></p><p class="st-q">“Please make the logo bigger.”</p><p>Fix ready.</p><p class="st-k"><span class="on">Push live</span></p></div>
+                <div class="st-m me" style="--i:3">/money</div>
+                <div class="st-m" style="--i:4"><p class="st-bh"><svg class="ic"><use href="#i-coin"/></svg>This week<time>18:00</time></p><p>Money in, money out, new subscriptions.</p></div>
+                <div class="st-m" style="--i:5"><p class="st-bh"><svg class="ic"><use href="#i-mic"/></svg>German practice<time>21:00</time></p><p>~7 min. Tap, allow the mic, just talk.</p><p class="st-k"><span class="on">Start call</span></p></div>
+              </div>
+            </div>
+          </div>
+          <p class="st-c"><strong>10 jobs, 1 app:</strong> my AI agent runs my day in Telegram.</p>
+        </article>
+        <article class="st-s" aria-label="Reason 3 of 4">
+          <div class="st-h"><span>03</span><b>I make people stop scrolling.</b></div>
+          <div class="st-v">
+            <div class="st-tm">
+              <video muted loop playsinline preload="none" poster="media/reel-tomatina-part1.jpg" data-src="media/reel-tomatina-part1-p.mp4"></video>
+              <div><span class="st-n" data-count="700" data-suffix="K">700K</span><small>views in 1 day</small><span class="st-pill">+4K followers</span></div>
+            </div>
+          </div>
+          <p class="st-c"><strong>Tomatina, Part 1</strong>, my AI animation on Instagram. <a href="https://www.instagram.com/reel/DejHEwAN0no/" target="_blank" rel="noopener">See the post</a></p>
+        </article>
+        <article class="st-s" aria-label="Reason 4 of 4">
+          <div class="st-h"><span>04</span><b>One link in, a finished short out.</b></div>
+          <div class="st-v st-mk">
+            <p class="st-lk"><svg><use href="#l-ig"/></svg><span>instagram.com/reel/…</span><b><svg class="ic"><use href="#i-send"/></svg></b></p>
+            <i class="st-w" style="--d:1s"></i>
+            <div class="st-cl"><p><span class="mascot" data-cell="3"></span>Claude makes it</p>
+              <div class="st-pb"><i></i><b style="--i:0">OK</b><b style="--i:1">OK</b><b style="--i:2">OK</b></div>
+              <small><span style="--i:0">Research</span><span style="--i:1">Story</span><span style="--i:2">Voices</span><span style="--i:3">Edit</span></small></div>
+            <i class="st-w" style="--d:5.8s"></i>
+            <div class="st-out"><span class="st-sh"><img src="media/reel-tomatina-part1.jpg" alt="" loading="lazy"></span><p>Finished short<small><svg><use href="#l-tg"/></svg>Sent to my team</small></p></div>
+          </div>
+          <p class="st-c">I send <strong>one link</strong> and say <strong>OK 3 times</strong>. Claude does the rest.</p>
+        </article>
+      </div>
+      <button class="st-z" type="button" data-d="-1" aria-label="Previous reason"></button><button class="st-z" type="button" data-d="1" aria-label="Next reason"></button>
+      <div class="st-foot" aria-hidden="true"><span><span class="t-touch">TAP FOR NEXT</span><span class="t-mouse">CLICK FOR NEXT</span></span><span id="st-n">1 / 4</span></div>
+    </div>
+    <p class="rv why-end" style="--d:.3s">Self-taught with YouTube and Claude. Now let's build yours.</p>
+  </section>
+
+  <section class="jobs" id="jobs" data-rv>
+    <div class="lb rv">TEAMS + JOBS</div>
+    <h2 class="rv" style="--d:.08s">Your team, <em>my job.</em></h2>
+    <p class="jb-sub rv" style="--d:.16s">Every rope is real proof. <span class="t-touch">Tap</span><span class="t-mouse">Hover over</span> a team or a job.</p>
+    <div class="jb-web rv" id="jb-web" style="--d:.24s">
+      <small class="jb-k">YOUR TEAM</small>
+      <div class="jb-tags jb-teams"></div>
+      <div class="jb-nodes">
+        <button class="jb-n" type="button" data-p="R"><span class="jb-av"><img src="media/robert-avatar.jpg" alt=""></span><b>Robert</b><small>AI agent</small></button>
+        <button class="jb-n" type="button" data-p="M"><span class="jb-av"><svg class="ic"><use href="#i-cards"/></svg></span><b>MoneyMaker</b><small>client bot</small></button>
+        <button class="jb-n" type="button" data-p="S"><span class="jb-av"><img src="media/smartkartoffel-icon.png" alt=""></span><b>SmartKartoffel</b><small>web app</small></button>
+        <button class="jb-n" type="button" data-p="A"><span class="jb-av"><img class="full" src="media/aureyu-mark.svg" alt=""></span><b>Aureyu</b><small>desktop app</small></button>
+        <button class="jb-n" type="button" data-p="V"><span class="jb-av"><svg class="ic"><use href="#i-film"/></svg></span><b>Videos</b><small>AI + motion</small></button>
+      </div>
+      <div class="jb-tags jb-jobs"></div>
+      <small class="jb-k">MY JOB</small>
+      <svg class="jb-ropes" aria-hidden="true"></svg>
+    </div>
+    <div class="jb-pc" id="jb-pc" aria-live="polite" hidden></div>
+  </section>
+
+  <section class="pull" id="pull" data-rv>
+    <div class="ptxt"><div class="lb rv">LAST EPISODE</div><h2><span class="ln"><span style="--d:.1s">PULL ME INTO</span></span><em class="ln"><span style="--d:.24s">your team.</span></em></h2></div>
+    <div class="stage" id="stage">
+      <svg id="hand" viewBox="0 0 390 330" aria-hidden="true"></svg>
+      <span class="w" style="left:45.6%;top:18.8%;--r:-7deg;--d:0s">AUTOMATE</span>
+      <span class="w" style="left:76.9%;top:26.7%;--r:5deg;--d:.05s">EDIT</span>
+      <span class="w" style="left:33.8%;top:64.8%;--r:4deg;--d:.1s">BUILD</span>
+      <span class="w" style="left:60.5%;top:60.6%;--r:-4deg;--d:.15s">LET'S</span>
+      <span class="w" style="left:73.3%;top:70.3%;--r:3deg;--d:.2s;color:var(--gold)">TALK</span>
+      <button class="pill" id="pill" type="button">HIRE ME</button>
+      <span class="nudge" aria-hidden="true"><svg viewBox="0 0 60 40"><path d="M48 29C39 27 22 22 12 8M12 8l1 9M12 8l9 1"/></svg><i><span class="t-touch">tap me</span><span class="t-mouse">click me</span></i></span>
+    </div>
+    <div class="hint rv" style="--d:1.6s"><span class="t-touch">TAP THE BUTTON</span><span class="t-mouse">CLICK THE BUTTON</span> &rarr;</div>
+  </section>
+
+  <section class="ct" id="hire" data-rv>
+    <div class="pend" id="pend">
+      <h2 class="pw" aria-label="Let's build. Let's talk!"><b class="pa" aria-hidden="true">LET'S BUILD</b><b class="pb" aria-hidden="true">LET'S TALK!</b></h2>
+      <div class="pr" aria-hidden="true"><i></i><span class="bob"><svg viewBox="0 0 100 100"><path d="M50 14Q54.24 45.76 80 50Q54.24 54.24 50 86Q45.76 54.24 20 50Q45.76 45.76 50 14Z" transform="rotate(18 50 50)" fill="#0A0A0A"/><path d="M0 100L100 0" stroke="#fff" stroke-width="3.4"/></svg></span></div>
+      <span class="pt">AUTOMATION • APPS • VIDEOS</span>
+    </div>
+    <p class="rv" style="--d:.4s">Tell me what you need. Automation, videos, or both. I answer myself.</p>
+    <div class="bts rv" style="--d:.55s">
+      <a class="bt g" href="mailto:rico.jonathan80@gmail.com?subject=Let's%20work%20together"><svg class="ic"><use href="#i-mail"/></svg>Email me</a>
+      <a class="bt o" href="mailto:rico.jonathan80@gmail.com?subject=Your%20CV%2C%20please"><svg class="ic"><use href="#i-down"/></svg>Download CV</a>
+      <a class="bt o" href="https://instagram.com/cikojaja" target="_blank" rel="noopener"><svg><use href="#l-ig"/></svg>DM me on Instagram</a>
+    </div>
+    <p class="soc rv" id="soc" style="--d:.65s"></p>
+    <div class="tbc"><b>TO BE CONTINUED…</b><a href="https://instagram.com/cikojaja" target="_blank" rel="noopener">New episode every week on Instagram</a></div>
+  </section>
+</main>
+
+<div id="room" class="room" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="r-title" hidden>
+  <div class="rbar"><button class="back" data-back type="button"><svg class="ic"><use href="#i-back"/></svg><span class="bk">Island</span></button><span class="where">INSIDE <b id="r-where"></b></span></div>
+  <div class="rin" id="rin"></div>
+</div>
+
+<dialog id="player" aria-label="Video"><p class="pst" hidden></p><video playsinline controls preload="auto"></video><button class="x" type="button" data-close aria-label="Close" autofocus><svg class="ic"><use href="#i-x"/></svg></button></dialog>
+
+<script src="rooms.js"></script>
+<script>
+// Page logic is a classic script so the loader starts at once, while the 3D island is still downloading.
+const POSTERS = [['aureyu', 'poster-aureyu.jpg'], ['automations', 'poster-robert.jpg'], ['smartkartoffel', 'poster-smartkartoffel.jpg'], ['studio', 'reel-tomatina-part1.jpg']];
+let isle = null; // set by the 3D module below
+
+const $ = (s) => document.querySelector(s), $$ = (s) => document.querySelectorAll(s);
+const root = document.documentElement, room = $('#room'), bar = $('.top'), q = new URLSearchParams(location.search), reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+root.classList.toggle('light', q.get('theme') === 'light'); // white island, for comparing
+const ease = (x) => (x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+let here = null, door = null, opener = null; // opener: the poster or proof row a room grows out of
+
+const tween = (ms, fn) => new Promise((done) => {
+  const t0 = performance.now();
+  const step = (now) => { const k = ms ? Math.min(1, Math.max(0, (now - t0) / ms)) : 1; fn(k); k < 1 ? requestAnimationFrame(step) : done(); };
+  requestAnimationFrame(step);
+});
+const wait = (ms) => tween(ms, () => {});
+const scrollToY = (y) => { const y0 = scrollY; return tween(reduce ? 0 : 1100, (k) => scrollTo({ top: y0 + (y - y0) * ease(k), behavior: 'instant' })); };
+const pageY = (el) => el.getBoundingClientRect().top + scrollY;
+
+// island shape: long and tilted on laptops, square on phones (chosen once, at load)
+const SHAPE = innerWidth >= 900 ? { w: 20, d: 12, yaw: 32 * Math.PI / 180 } : { w: 12, d: 12, yaw: Math.PI / 4 };
+// where the island sits: phone = between the top bar and the welcome text, desktop = the whole width, a little below the middle
+function area(w, h) {
+  if (w >= 900) return { cx: w / 2, cy: h * .56, aw: w * .98, ah: h * .84 };
+  const top = bar.offsetHeight + 4, bottom = h - 84 - $('.welcome').offsetHeight;
+  return { cx: w / 2, cy: (top + bottom) / 2, aw: w, ah: bottom - top };
+}
+
+// ---- loading: a gold line draws the island's border while the page loads, then the island builds itself inside it
+const loader = $('#loader'), [halo, line] = loader.querySelectorAll('polygon'), ldn = $('#ld-n');
+let goal = 8, shown = 0, edge = 0, lt = 0;
+const progress = (p) => (goal = Math.max(goal, p));
+function rim() { // the island's gold border on screen, before the 3D exists: same maths as fit() + place() in island.js (camera at rest)
+  const el = $('#isle'), w = el.clientWidth, h = el.clientHeight, A = area(w, h), a = SHAPE.yaw, E = Math.atan2(13, 19.8), hw = SHAPE.w / 2, hd = SHAPE.d / 2;
+  const R = [Math.cos(a), 0, -Math.sin(a)], U = [-Math.sin(a) * Math.sin(E), Math.cos(E), -Math.cos(a) * Math.sin(E)];
+  const cam = ([x, y, z]) => [x * R[0] + z * R[2], x * U[0] + (y - .9) * U[1] + z * U[2]];
+  const corners = [[-hw, .012, -hd], [hw, .012, -hd], [hw, .012, hd], [-hw, .012, hd]].map(cam);
+  const pts = [...corners, cam([-4 * SHAPE.w / 12, 7.2, -1.8 * SHAPE.d / 12]), cam([0, -4.8, 0])]; // + Aureyu's tower top and the rock's tip
+  const xs = pts.map((p) => p[0]), ys = pts.map((p) => p[1]);
+  const u = Math.max((Math.max(...xs) - Math.min(...xs) + .6) / A.aw, (Math.max(...ys) - Math.min(...ys) + .6) / A.ah);
+  const sx = (A.cx - w / 2) * u - (Math.max(...xs) + Math.min(...xs)) / 2, sy = (A.cy - h / 2) * u + (Math.max(...ys) + Math.min(...ys)) / 2;
+  return corners.map(([X, Y]) => ({ x: w / 2 + (X + sx) / u, y: h / 2 + (sy - Y) / u }));
+}
+function lay(pts) {
+  if (pts.some((p) => !Number.isFinite(p.x + p.y))) return; // no size yet (hidden tab)
+  const s = pts.map((p) => `${p.x},${p.y}`).join(' ');
+  edge = pts.reduce((n, p, i) => n + Math.hypot(p.x - pts[(i + 1) % 4].x, p.y - pts[(i + 1) % 4].y), 0);
+  halo.setAttribute('points', s); line.setAttribute('points', s);
+  line.style.strokeDasharray = edge; line.style.strokeDashoffset = edge * (1 - shown / 100);
+  $('#ld-mark').style.top = `${(pts[0].y + pts[2].y) / 2}px`;
+}
+function load(now) {
+  const dt = lt ? Math.min(64, now - lt) : 0; lt = now;
+  shown = Math.min(goal, shown + dt * .1); // at least 1 s from 0 to 100
+  line.style.strokeDashoffset = edge * (1 - shown / 100);
+  ldn.textContent = Math.floor(shown);
+  shown >= 100 ? reveal() : requestAnimationFrame(load);
+}
+async function reveal() { // name + title, then the line becomes the island's border and the town builds itself
+  loader.classList.add('done');
+  await wait(reduce ? 0 : 800);
+  if (isle) lay(isle.border());
+  loader.classList.add('out'); isle?.start();
+  document.body.classList.add('ready'); root.classList.remove('lock');
+  await wait(2200);
+  loader.classList.add('gone');
+}
+
+// ---- inside a building (from the island door or from a poster); rooms.js draws each one
+function fill(name) {
+  const lv = ORDER.indexOf(name) + 1, nx = ORDER[lv];
+  const next = nx ? { title: `Next: ${ROOMS[nx].name}`, small: `Level ${lv + 1} of 5`, sub: ROOMS[nx].type, img: ROOMS[nx].poster }
+    : { title: 'Let\'s talk', small: 'Island complete', sub: 'Email, CV or Instagram', img: 'avatar.jpg' };
+  here = name;
+  $('#r-where').textContent = ROOMS[name].name.toUpperCase();
+  $('#rin').innerHTML = renderRoom(name, { lv, next, door });
+  paintMascots($('#rin'));
+}
+function openRoom(name) {
+  fill(name);
+  $('.rbar .bk').textContent = door ? 'Island' : 'Back';
+  room.hidden = false; room.scrollTop = 0; root.classList.add('lock');
+}
+async function nextRoom() { // the next level, or after the last one: on to the contact
+  const nx = ORDER[ORDER.indexOf(here) + 1];
+  if (!nx) { await out(); return scrollToY(pageY($('#hire'))); }
+  const fade = $('#rin').animate({ opacity: [1, 0] }, { duration: reduce ? 0 : 180, fill: 'forwards' });
+  await fade.finished;
+  fill(nx); room.scrollTop = 0; fade.cancel();
+}
+room.addEventListener('click', (e) => {
+  const t = e.target.closest('[data-back],[data-next],.trailer[data-v],a[href^="#"]');
+  if (!t) return;
+  if (t.matches('[data-back]')) return out();
+  if (t.matches('[data-next]')) return nextRoom();
+  if (t.matches('.trailer[data-v]')) return play(t);
+  e.preventDefault(); // in-room links: #trailer plays it, #feats scrolls to the list
+  const v = $('#rin .trailer[data-v]');
+  if (t.getAttribute('href') === '#trailer' && v) play(v); else $(`#rin ${t.getAttribute('href')}`)?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
+});
+const settle = () => { room.style.clipPath = 'none'; room.focus({ preventScroll: true }); };
+const cover = (p) => Math.hypot(Math.max(p.x, innerWidth - p.x), Math.max(p.y, innerHeight - p.y));
+const circle = (p, r) => `circle(${r}px at ${p.x}px ${p.y}px)`;
+const box = (r, k) => `inset(${r.top * k}px ${(innerWidth - r.right) * k}px ${(innerHeight - r.bottom) * k}px ${r.left * k}px round ${6 * k}px)`; // k 1 = poster, 0 = full screen
+
+async function go(name) { // pick a building: fly in, the door opens, the room grows out of the door
+  if (!isle) return;
+  document.body.classList.add('diving');
+  const pt = await isle.enter(name);
+  if (!pt) return;
+  door = pt; openRoom(name);
+  if (!reduce) await tween(520, (k) => (room.style.clipPath = circle(pt, cover(pt) * k * k)));
+  settle();
+}
+async function peek(el) { // tap a poster (or a proof row): it grows into the room
+  opener = el; door = null; openRoom(el.dataset.k);
+  const r = el.getBoundingClientRect();
+  if (!reduce) await tween(650, (k) => (room.style.clipPath = box(r, 1 - ease(k))));
+  settle();
+}
+async function out() {
+  if (room.hidden) return;
+  room.querySelector('video')?.pause();
+  const p = opener?.isConnected && opener.dataset.k === here ? opener : $(`.poster[data-k="${here}"]`);
+  if (door) {
+    isle.leave();
+    if (!reduce) await tween(380, (k) => (room.style.clipPath = circle(door, cover(door) * (1 - k) ** 2)));
+  } else if (p) {
+    const r = p.getBoundingClientRect();
+    if (!reduce) await tween(560, (k) => (room.style.clipPath = box(r, ease(k))));
+    p.focus({ preventScroll: true });
+  } else if (!reduce) await tween(320, (k) => (room.style.opacity = 1 - k));
+  room.hidden = true; room.style.clipPath = room.style.opacity = ''; root.classList.remove('lock'); document.body.classList.remove('diving');
+}
+
+// ---- rows: posters, videos, filter chips, counters
+$('#posters').innerHTML = POSTERS.map(([n, img], i) => `<button class="poster" type="button" data-k="${n}" style="--d:${(.12 + i * .07).toFixed(2)}s" aria-label="${ROOMS[n].name}">` +
+  `<img src="media/${img}" alt="" loading="lazy"><span class="cb"></span>${n === 'aureyu' ? '<span class="new">NEW</span>' : ''}<b>${ROOMS[n].name.toUpperCase().replace('KARTOFFEL', '&shy;KARTOFFEL')}</b></button>`).join('');
+$('#posters').onclick = (e) => { const p = e.target.closest('.poster'); if (p) peek(p); };
+$('#reels').innerHTML = REELS.map(([f, t, d, c, h], i) => `<button class="reel" type="button" data-v="${f}" style="--d:${(.12 + i * .07).toFixed(2)}s" aria-label="Play: ${t}">` +
+  `<video src="media/${f}-p.mp4" poster="media/${f}.jpg" muted loop playsinline preload="none"></video><span class="cat">${c}</span>${hit(h)}<span class="pl"><svg class="ic"><use href="#i-play"/></svg></span><b>${t} · ${d}</b></button>`).join('');
+// the tiles play a silent 6 s loop while on screen
+const loops = new IntersectionObserver((es) => es.forEach((e) => (e.isIntersecting && !reduce ? e.target.play().catch(() => {}) : e.target.pause())));
+$$('#reels video').forEach((v) => loops.observe(v));
+const player = $('#player'), pv = player.querySelector('video');
+let reel = null;
+const flip = (a, b) => `translate(${a.left - b.left}px,${a.top - b.top}px) scale(${a.width / b.width},${a.height / b.height})`;
+function play(b) { // the thumbnail grows into the player
+  reel = b;
+  pv.src = `media/${b.dataset.v}.mp4`; pv.poster = `media/${b.dataset.v}.jpg`; pv.muted = false;
+  const [, , , , h, x, src] = REELS.find((r) => r[0] === b.dataset.v) || [], pst = player.querySelector('.pst'); // the views + the post as proof, above the video
+  pst.hidden = !h; pst.innerHTML = [h, x].filter(Boolean).join(' · ') + (src ? ` · <a href="${src}" target="_blank" rel="noopener">See the post</a>` : '');
+  player.classList.remove('closing'); player.showModal();
+  pv.play().catch(() => { pv.muted = true; pv.play().catch(() => {}); });
+  if (!reduce) pv.animate([{ transform: flip(b.getBoundingClientRect(), pv.getBoundingClientRect()) }, { transform: 'none' }], { duration: 650, easing: 'cubic-bezier(.16,1,.3,1)' });
+}
+async function stop() {
+  if (!player.open || player.classList.contains('closing')) return;
+  player.classList.add('closing');
+  if (!reduce) await pv.animate([{ transform: 'none' }, { transform: flip(reel.getBoundingClientRect(), pv.getBoundingClientRect()), opacity: .35 }], { duration: 480, easing: 'cubic-bezier(.65,0,.35,1)' }).finished;
+  pv.pause(); player.close(); pv.removeAttribute('src'); pv.load();
+}
+$('#soc').innerHTML = socials();
+$('#reels').onclick = (e) => { const b = e.target.closest('.reel'); if (b) play(b); };
+player.addEventListener('cancel', (e) => { e.preventDefault(); stop(); });
+player.onclick = (e) => { if (e.target === player || e.target.closest('[data-close]')) stop(); };
+
+$$('.chips button').forEach((b) => (b.onclick = () => {
+  $$('.chips button').forEach((c) => c.classList.toggle('on', c === b));
+  document.body.dataset.f = b.dataset.f;
+  if (!reduce) $('#rows').animate({ opacity: [0, 1], translate: ['0 14px', '0 0'] }, { duration: 700, easing: 'cubic-bezier(.16,1,.3,1)' });
+  if (b.dataset.f) scrollToY(pageY($('#rows')) - bar.offsetHeight);
+}));
+
+const count = (n) => {
+  const to = +n.dataset.count, s = n.dataset.suffix || '';
+  n.style.minWidth = `${n.offsetWidth}px`;
+  tween(reduce ? 0 : 1500, (k) => (n.textContent = Math.round(to * (1 - (1 - k) ** 3)) + (k === 1 ? s : '')));
+};
+const seen = new IntersectionObserver((es) => es.forEach((e) => {
+  if (!e.isIntersecting) return;
+  e.target.classList.add('in'); seen.unobserve(e.target);
+  e.target.querySelectorAll('[data-count]').forEach(count);
+}), { threshold: .2 });
+$$('[data-rv]').forEach((e) => seen.observe(e));
+
+// ---- intro (desktop): the apps I connect, on two slow rings around Claude, each in its own colours
+const ORBIT = [ // [ring, logo, tile, logo colour, size, name]
+  [0, 'l-tg', '#fff', '', 1, 'Telegram'], [0, 'l-wa', '#fff', '', .6, 'WhatsApp'], [0, 't-no', '#fff', '#000', .52, 'Notion'], [0, 't-gl', '#fff', '#EA4335', .52, 'Gmail'], [0, 't-sb', '#1C1C1C', '#3FCF8E', .52, 'Supabase'],
+  [1, 'l-sg', '#fff', '', .6, 'Signal'], [1, 'l-ig', 'linear-gradient(45deg,#FEDA75,#FA7E1E 30%,#D62976 55%,#962FBF 80%,#4F5BD5)', '#fff', .5, 'Instagram'], [1, 'l-yt', '#fff', '#FF0000', .6, 'YouTube'],
+  [1, 'l-tt', '#000', '#fff', .5, 'TikTok'], [1, 'l-gh', '#fff', '#181717', .6, 'GitHub'], [1, 't-vc', '#000', '#fff', .42, 'Vercel'], [1, 't-rw', '#0B0D0E', '#fff', .56, 'Railway'],
+  [1, 't-nx', '#fff', '#000', .64, 'Next.js'], [1, 'gem', '#fff', '', .56, 'Gemini'], [1, 't-el', '#fff', '#000', .44, 'ElevenLabs']];
+{ const spins = $$('#orb .spin'), R = [135, 215], n = [0, 1].map((k) => ORBIT.filter((o) => o[0] === k).length), at = [0, 0];
+  const gem = `<svg viewBox="0 0 24 24"><defs><linearGradient id="gem" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#4285F4"/><stop offset=".55" stop-color="#9B72CB"/><stop offset="1" stop-color="#D96570"/></linearGradient></defs><path fill="url(#gem)" d="${$('#t-gm path').getAttribute('d')}"/></svg>`;
+  ORBIT.forEach(([k, id, bg, c, s, name]) => {
+    const a = (at[k]++ / n[k]) * Math.PI * 2 - Math.PI / 2 + k * .3, tt = id === 'l-tt' ? ' style="filter:drop-shadow(-1.2px -1px 0 #25F4EE) drop-shadow(1.2px 1px 0 #FE2C55)"' : '';
+    spins[k].insertAdjacentHTML('beforeend', `<span class="lg" title="${name}" style="left:${230 + R[k] * Math.cos(a)}px;top:${230 + R[k] * Math.sin(a)}px;background:${bg};color:${c || 'inherit'};--s:${s}">${id === 'gem' ? gem : `<svg${tt}><use href="#${id}"/></svg>`}</span>`);
+  });
+  $('#orb').setAttribute('aria-label', `Claude in the middle of the apps I connect: ${ORBIT.map((o) => o[5]).join(', ')}`); }
+
+// ---- why me: three proof stories, like Instagram. Each bar fills while its story plays (paused off screen); tap left = back, right = next
+const st = $('#st'), sts = $$('.st-s'), bars = $$('.st-bars i'), stv = $('.st-tm video');
+let si = 0;
+const stVideo = () => (si === 2 && !st.classList.contains('wait') && !reduce ? stv.play().catch(() => {}) : stv.pause());
+function story(i) {
+  si = (i + sts.length) % sts.length;
+  sts.forEach((s, k) => { s.classList.remove('on'); s.inert = k !== si; });
+  bars.forEach((b, k) => (b.className = k < si ? 'done' : ''));
+  void st.offsetWidth; // restarts the bar and the story's own animations
+  sts[si].classList.add('on'); bars[si].className = 'on';
+  $$('.why-l button').forEach((b, k) => b.classList.toggle('on', k === si));
+  $('#st-n').textContent = `${si + 1} / ${sts.length}`;
+  if (si === 2) { stv.src ||= stv.dataset.src; count($('.st-n')); }
+  stVideo();
+}
+sts.forEach((s, k) => (s.inert = k > 0));
+$('.why-l').innerHTML = [...sts].map((s, k) => `<li><button type="button" class="${k ? '' : 'on'}" data-i="${k}">${s.querySelector('.st-h').innerHTML}</button></li>`).join('');
+$('.why-l').onclick = (e) => { const b = e.target.closest('button'); if (b) story(+b.dataset.i); };
+$('.st-bars').addEventListener('animationend', (e) => e.animationName === 'st-fill' && story(si + 1));
+$$('.st-z').forEach((z) => (z.onclick = () => story(si + +z.dataset.d)));
+new IntersectionObserver(([e]) => { st.classList.toggle('wait', !e.isIntersecting); stVideo(); }, { threshold: .5 }).observe(st);
+
+// ---- teams + jobs: ropes run from what I built up to teams it works for and down to real AI job titles. Tap one (mouse: hover): its ropes pull tight and the proof opens
+const PROJ = { // name, room, one line
+  R: ['Robert', 'automations', 'My AI agent: 10 jobs, all in Telegram.'], M: ['MoneyMaker', 'automations', 'Client messages become live code fixes.'],
+  S: ['SmartKartoffel', 'smartkartoffel', 'AI app to learn German. Live at smartkartoffel.com.'], A: ['Aureyu', 'aureyu', 'WhatsApp, Telegram and Signal in one inbox.'],
+  V: ['Videos', 'studio', 'AI animation and motion graphics, made in code.'] };
+const JOBS = [
+  ['AI Engineer', { R: 'An AI agent that runs my day in Telegram.', M: 'A bot and web app that turn client messages into code fixes.', S: 'An AI app that fixes your German and explains why.', A: 'A desktop app that translates every chat live.' }],
+  ['AI Agent Developer', { R: 'Picks his own tools: my money, my to-dos, my ideas.', M: 'Tap “Fix it” and an AI agent writes the code and opens a pull request.' }],
+  ['AI Automation Engineer', { R: 'Reads my payment emails and sends me a money recap in Telegram.', M: 'A client’s message becomes a code fix. I tap once, it goes live.' }],
+  ['Integration Engineer', { R: 'Gmail, Claude, Notion and Telegram working together.', M: 'Telegram, GitHub, Supabase and Vercel in one flow.' }],
+  ['Full-Stack Developer', { M: 'Revision Board: a Next.js + Supabase web app for my team.', S: 'From idea to a live web app, on my own.' }],
+  ['Desktop App Developer', { A: 'Aureyu for Windows + Mac. 50+ users in week 1.' }],
+  ['Prompt Engineer', { R: 'Prompts that turn messy emails into clean money entries.', S: 'Prompts that correct German and explain the grammar.', V: 'I describe each video in words, Claude turns it into code.' }],
+  ['AI Solutions Engineer', { M: 'I set up the whole system for real clients: request in, live fix out.' }],
+  ['AI Consultant', { M: 'I help businesses hand their repeat steps to AI. 6 client builds so far.' }],
+  ['Motion Designer', { V: 'Motion graphics written in code. No After Effects.' }],
+  ['Content Creator', { V: 'Tomatina, Part 1 went viral: +4K followers.' }]];
+const TEAMS = [ // the same system in other teams: name, icon, what it would do there, the build that proves it
+  ['Restaurants', 'i-food', 'Table bookings from WhatsApp and Instagram, reminders to guests, tomorrow’s list for the kitchen.', { R: 'Sends my reminders: Done, +1h or Tonight in one tap.' }],
+  ['Customer service', 'i-inbox', 'Every chat in one inbox, translated live, with a reply idea ready.', { A: 'WhatsApp, Telegram and Signal in one inbox, translated live.' }],
+  ['Finance', 'i-coin', 'Payment emails read and sorted, an alert when a payment fails, a weekly recap.', { R: 'Reads my payment emails, warns me when one fails, sends a weekly recap.' }],
+  ['Marketing', 'i-film', 'Viral posts saved and studied, then turned into new videos.', { V: 'Saved viral posts become new fruit shorts.' }],
+  ['Agencies', 'i-cards', 'A client asks in chat, AI writes the fix, you tap once and it’s live.', { M: 'A client message becomes a live code fix. I tap once.' }],
+  ['Sales', 'i-send', 'Leads from every chat on one board, follow-ups that never get forgotten.', { M: 'Every client request on one board.' }],
+  ['Training', 'i-lang', 'A coach that calls you, corrects you and remembers your mistakes.', { R: 'My German coach: a live call, corrections, my mistakes saved.' }],
+  ['Clinics + salons', 'i-cal', 'Appointments booked in chat, a reminder the day before.', { R: 'Sends reminders at the right time, with one-tap buttons.' }]];
+const jobs = $('#jobs'), web = $('#jb-web'), rp = $('.jb-ropes'), pc = $('#jb-pc'), jnode = (p) => $(`.jb-n[data-p="${p}"]`);
+const tag = (key, inner) => `<button class="jb-t${key[0] === 'd' ? ' jb-d' : ''}" type="button" data-t="${key}" aria-pressed="false">${inner}</button>`;
+$('.jb-teams').innerHTML = TEAMS.map(([t, ic], i) => tag('d' + i, `<svg class="ic"><use href="#${ic}"/></svg>${t}`)).join('');
+$('.jb-jobs').innerHTML = JOBS.map(([j], i) => tag('j' + i, j)).join('');
+const proof = (key) => (key[0] === 'j' ? JOBS[key.slice(1)][1] : TEAMS[key.slice(1)][3]); // the builds that prove a job ('j3') or a team ('d2')
+const tags = [...$$('.jb-t')], ropes = tags.flatMap((t) => Object.keys(proof(t.dataset.t)).map((p) => ({ t, key: t.dataset.t, up: t.dataset.t[0] === 'd', p, k: 0, hot: false })));
+rp.innerHTML = ropes.map(() => '<g><path class="b"/><path class="f"/></g>').join('');
+ropes.forEach((r, i) => (r.g = rp.children[i]));
+let mid = 0, drop = null, swaying = false, ticking = false, sel = '';
+function ends() { // each rope runs from a peg on a project up to the peg under a team, or down to the peg on top of a job
+  const b = web.getBoundingClientRect(), at = (el, edge, dy) => { const r = el.getBoundingClientRect(); return [r.left + r.width / 2 - b.left, r[edge] - b.top + dy]; };
+  ropes.forEach((r) => { [r.x0, r.y0] = at(jnode(r.p), r.up ? 'top' : 'bottom', r.up ? 4 : -4); [r.x1, r.y1] = at(r.t, r.up ? 'bottom' : 'top', r.up ? 1 : -1); });
+  mid = b.width / 2;
+}
+function ropeFrame(now) { // slack ropes drop in one by one, sag and sway; picked ones pull straight
+  let more = swaying;
+  ropes.forEach((r, i) => {
+    const t = drop === null ? 0 : reduce ? 1 : Math.min(1, Math.max(0, (now - drop - i * 40) / 700)), to = +r.hot;
+    if (drop !== null && t < 1) more = true;
+    r.k += (to - r.k) * .2; if (Math.abs(to - r.k) > .003) more = true;
+    const p = t && 1 + 2.70158 * (t - 1) ** 3 + 1.70158 * (t - 1) ** 2; // overshoots a little, like a dropped rope
+    const x = r.x0 + (r.x1 - r.x0) * p, y = r.y0 + (r.y1 - r.y0) * p, len = Math.hypot(x - r.x0, y - r.y0), s = 1 - r.k;
+    const bow = ((r.x1 < mid ? -1 : 1) * len * .07 + (reduce ? 0 : 3 * Math.sin(now / 1300 + i * 1.9))) * s;
+    const d = `M${r.x0.toFixed(1)} ${r.y0.toFixed(1)}Q${((r.x0 + x) / 2 + bow).toFixed(1)} ${((r.y0 + y) / 2 + len * .06 * s).toFixed(1)} ${x.toFixed(1)} ${y.toFixed(1)}`;
+    r.g.firstChild.setAttribute('d', d); r.g.lastChild.setAttribute('d', d);
+  });
+  ticking = more; if (more) requestAnimationFrame(ropeFrame);
+}
+const ropeKick = () => { if (!ticking) { ticking = true; requestAnimationFrame(ropeFrame); } };
+const hov = matchMedia('(hover:hover)').matches;
+function pick(key) { // 'j3' = a job, 'd2' = a team, 'pR' = a project; touch: the same tap again lets go (mouse: hovering picks, so a click never drops it)
+  sel = sel === key && !hov ? '' : key;
+  const p = sel[0] === 'p' ? sel[1] : '', ps = p ? [p] : sel ? Object.keys(proof(sel)) : [];
+  ropes.forEach((r) => { r.hot = !!sel && (r.key === sel || r.p === p); r.g.classList.toggle('hot', r.hot); if (r.hot) rp.appendChild(r.g); });
+  tags.forEach((t) => { const k = t.dataset.t; t.classList.toggle('on', k === sel || (!!p && p in proof(k))); t.setAttribute('aria-pressed', k === sel); });
+  $$('.jb-n').forEach((n) => { n.classList.toggle('on', ps.includes(n.dataset.p)); n.setAttribute('aria-pressed', n.dataset.p === p); });
+  jobs.classList.toggle('pick', !!sel);
+  const row = (q, line) => `<button type="button" data-k="${PROJ[q][1]}">${jnode(q).querySelector('.jb-av').outerHTML}<span><b>${PROJ[q][0]}</b> ${line}</span><svg class="ic"><use href="#i-arrow"/></svg></button>`;
+  const rows = () => Object.entries(proof(sel)).map(([q, l]) => row(q, l)).join(''), n = (kind) => tags.filter((t) => t.dataset.t[0] === kind && p in proof(t.dataset.t)).length;
+  if (sel) pc.innerHTML = p ? `<small>${PROJ[p][0]} · proves ${n('j')} jobs, ${n('d')} teams</small>${row(p, PROJ[p][2])}`
+    : sel[0] === 'j' ? `<small>${JOBS[sel.slice(1)][0]} · proof</small>${rows()}`
+    : `<small>${TEAMS[sel.slice(1)][0]} · what I’d build</small><p>${TEAMS[sel.slice(1)][2]}</p>${rows()}`;
+  pc.hidden = !sel;
+  ropeKick();
+}
+const keyOf = (el) => el.dataset.t || 'p' + el.dataset.p;
+web.onclick = (e) => { const el = e.target.closest('.jb-t,.jb-n'); if (el) pick(keyOf(el)); };
+if (hov) {
+  web.addEventListener('pointerover', (e) => { const el = e.target.closest('.jb-t,.jb-n'); if (el && e.pointerType === 'mouse' && keyOf(el) !== sel) pick(keyOf(el)); });
+  pc.innerHTML = '<small>Proof</small><p>Hover over a team or a job. Its proof shows up here.</p>'; pc.hidden = false;
+}
+pc.onclick = (e) => { const b = e.target.closest('button'); if (b) peek(b); };
+new ResizeObserver(() => { ends(); ropeKick(); }).observe(web);
+document.fonts.ready.then(() => { ends(); ropeKick(); });
+new IntersectionObserver(([e]) => {
+  swaying = e.isIntersecting && !reduce;
+  if (e.isIntersecting && drop === null) { ends(); drop = performance.now() + 250; }
+  if (!e.isIntersecting && sel && !hov) pick(sel); // phone: scrolled away, the proof sheet goes too
+  ropeKick();
+}, { threshold: .35 }).observe(web);
+
+// ---- the end: my logo swings on its cord. Left of it reads LET'S TALK!, right of it LET'S BUILD
+const pend = $('#pend'), pr = $('.pr'), pa = $('.pw .pa'), pb = $('.pw .pb');
+let swinging = false, pm = null; // pm: sizes, read again after a resize
+const pendMeasure = () => { const len = $('.pr i').offsetHeight, half = Math.max(pa.offsetWidth, pb.offsetWidth) / 2;
+  return { mid: pend.offsetWidth / 2, len, s: (half + 24) / (len * Math.sin(50 * Math.PI / 180)), a: pa.offsetLeft, b: pb.offsetLeft + pb.offsetWidth }; };
+function pendDraw(ms) { // a pure function of time (one swing = 2.8 s), so it can be filmed frame by frame
+  pm ||= pendMeasure();
+  const k = Math.sin(ms / 2800 * Math.PI * 2), x = pm.mid + pm.len * Math.sin(50 * k * Math.PI / 180) * pm.s;
+  pr.style.rotate = `${-50 * k}deg`;
+  pb.style.clipPath = `inset(-30% ${Math.max(0, pm.b - x)}px -30% -12px)`;
+  pa.style.clipPath = `inset(-30% -12px -30% ${Math.max(0, x - pm.a)}px)`;
+}
+const pendLoop = (now) => { pendDraw(now); if (swinging) requestAnimationFrame(pendLoop); };
+new IntersectionObserver(([e]) => { const was = swinging; swinging = e.isIntersecting && !reduce; if (swinging && !was) requestAnimationFrame(pendLoop); }).observe(pend);
+addEventListener('resize', () => (pm = null));
+document.fonts.ready.then(() => { pm = null; pendDraw(700); });
+pendDraw(700); // at rest (and with reduced motion): the logo hangs right, LET'S TALK! reads in full
+
+// ---- last episode: a hand keeps reaching for the button on thin strings.
+// Touch it (hover / first tap): the hand pulls and the words pop out from behind it. Click it (second tap, or pull it): it grows into the contact page.
+const F = [[200, 128, 66, 8.5, 6.5, 12], [206, 109, 84, 9.5, 7, 5], [208, 88, 92, 10, 7.5, -1], [204, 66, 84, 10, 7.5, -7]], TH = [172, 62, 60, 11, 8.5, -34], T = { x: -46, y: 72, s: .72 };
+const fp = ([x, y, L, a, b, r]) => { const e = x + L - b; return `<path d="M${x},${y - a} L${e},${y - b} A${b},${b} 0 0 1 ${e},${y + b} L${x},${y + a} Z" transform="rotate(${r} ${x} ${y})"/>`; };
+const tips = F.slice().reverse().map(([x, y, L, , , r]) => { r *= Math.PI / 180; return [T.x + T.s * (x + L * Math.cos(r)), T.y + T.s * (y + L * Math.sin(r))]; });
+$('#hand').innerHTML = `<g class="strings" fill="none" stroke="#1A1A1A" stroke-width="1.1">${tips.map(() => '<path/>').join('')}</g>
+<g class="handg"><g id="arm"><g transform="translate(${T.x} ${T.y}) scale(${T.s})" fill="#fff" stroke="#0A0A0A" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+<path d="M-60,66 L112,52 L122,152 L-60,172 Z" fill="#0A0A0A" stroke="none"/>${F.map(fp).join('')}
+<path d="M146,58 C170,48 200,50 214,58 L224,132 C206,148 176,152 154,146 Z"/>${fp(TH)}
+<path d="M207,72 q5,-4 10,0 M211,93 q5,-4 10,0 M209,113 q5,-3 9,1" fill="none" stroke-width="2"/>
+<path d="M108,50 L140,46 Q147,45 148,52 L156,144 Q157,151 150,152 L118,155 Q111,156 110,149 Z"/>
+<circle cx="131" cy="128" r="5.5" fill="#C9923E" stroke-width="2"/></g></g></g>`;
+const stage = $('#stage'), pill = $('#pill'), strings = $$('.strings path'), armG = $('#arm'), label = pill.textContent;
+let px = 0, py = 0, vx = 0, vy = 0, hx = 0, grab = null, dragged = false, armed = false, wasArmed = false, how = '', busy = false, live = false, last = 0, praf = 0;
+function draw(now) { // the arm reaches for the button and pulls back; armed, it holds back and the strings go tight (svg units: the stage is 390 wide)
+  const u = 390 / stage.clientWidth, L = (pill.offsetLeft - pill.offsetWidth / 2 + px) * u + 6, top = (pill.offsetTop + py) * u;
+  const reach = Math.max(0, L - 182), aim = armed ? -36 : reduce ? 0 : -10 + (reach + 10) * (.5 - .5 * Math.cos(now / 2600 * Math.PI * 2)) ** 1.6;
+  hx += (aim - hx) * (armed ? .2 : .1);
+  armG.setAttribute('transform', `translate(${hx} 0)`);
+  strings.forEach((s, i) => {
+    const x = tips[i][0] + hx, y = tips[i][1], ay = top + 10 + i * 10, sag = Math.max(0, 14 - Math.hypot(L - x, ay - y) / 6);
+    s.setAttribute('d', `M${x},${y} Q${(x + L) / 2},${(y + ay) / 2 + sag} ${L},${ay}`);
+  });
+  pill.style.transform = `translate(${px}px,${py}px)`;
+}
+function spring(now) {
+  praf = 0;
+  const dt = Math.min(.034, (now - last) / 1000) || .016; last = now;
+  if (!grab) { vx += (-170 * px - 11 * vx) * dt; vy += (-170 * py - 11 * vy) * dt; px += vx * dt; py += vy * dt; }
+  draw(now);
+  if (live || grab) praf = requestAnimationFrame(spring);
+}
+const kick = () => { if (!praf) { last = performance.now(); praf = requestAnimationFrame(spring); } };
+new IntersectionObserver(([e]) => { live = e.isIntersecting; if (live) kick(); }).observe(stage);
+new ResizeObserver(() => { // the words wait behind the button: offset of each word from the button centre
+  const cx = pill.offsetLeft, cy = pill.offsetTop + pill.offsetHeight / 2;
+  $$('.w').forEach((w) => { w.style.setProperty('--dx', `${cx - w.offsetLeft - w.offsetWidth / 2}px`); w.style.setProperty('--dy', `${cy - w.offsetTop - w.offsetHeight / 2}px`); });
+}).observe(stage);
+function arm(on) {
+  if (armed === on) return;
+  armed = on; stage.classList.toggle('armed', on);
+  if (on) stage.classList.add('touched'); // the "click me" hint has done its job
+  if (!on || reduce) return;
+  const A = 'HIRE#M%&?*';
+  pill.style.width = `${pill.offsetWidth}px`;
+  tween(420, (k) => { // the label flickers, then settles
+    pill.textContent = k < 1 ? [...label].map((c, i) => (c === ' ' || k * 1.4 > i / label.length + .4 ? c : A[(Math.random() * A.length) | 0])).join('') : label;
+    if (k === 1) pill.style.width = '';
+  });
+}
+async function hire() { // the button grows into a black screen, the page moves to the contact behind it, the screen fades away
+  if (busy) return;
+  busy = true;
+  const r = pill.getBoundingClientRect(), z = document.createElement('div');
+  z.className = 'zoom'; document.body.appendChild(z);
+  await z.animate([{ left: `${r.left}px`, top: `${r.top}px`, width: `${r.width}px`, height: `${r.height}px`, borderRadius: `${r.height / 2}px` },
+    { left: '0px', top: '0px', width: `${innerWidth}px`, height: `${innerHeight}px`, borderRadius: '0px' }], { duration: reduce ? 0 : 850, easing: 'cubic-bezier(.76,0,.24,1)', fill: 'forwards' }).finished;
+  scrollTo({ top: pageY($('#hire')), behavior: 'instant' });
+  await z.animate({ opacity: [1, 0] }, { duration: reduce ? 0 : 500, easing: 'ease-out', fill: 'forwards' }).finished;
+  z.remove(); arm(false); busy = false;
+}
+pill.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') arm(true); });
+pill.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse' && !grab && !busy) arm(false); });
+pill.addEventListener('pointerdown', (e) => { wasArmed = armed; how = e.pointerType; arm(true); grab = { x: e.clientX, y: e.clientY }; dragged = false; pill.setPointerCapture(e.pointerId); kick(); });
+pill.addEventListener('pointermove', (e) => {
+  if (!grab) return;
+  const dx = e.clientX - grab.x, dy = e.clientY - grab.y, d = Math.hypot(dx, dy), f = 1 / (1 + d / 240); // rubber band
+  const space = stage.clientWidth - pill.offsetLeft - pill.offsetWidth / 2 - 6; // keep the button on screen (phones)
+  if (d > 6) dragged = true;
+  px = dx * f; py = dy * f; vx = vy = 0;
+  if (px > space) px = space + (px - space) * .2;
+});
+pill.addEventListener('pointerup', (e) => { if (!grab) return; const d = Math.hypot(e.clientX - grab.x, e.clientY - grab.y); grab = null; if (d > 60) hire(); });
+pill.addEventListener('pointercancel', () => (grab = null));
+pill.addEventListener('focus', () => arm(true));
+pill.addEventListener('blur', () => { if (!busy) arm(false); });
+pill.onclick = () => { // touch: the first tap shows the words, the second one goes; mouse / keyboard: one click goes
+  const first = how === 'touch' && !wasArmed;
+  how = '';
+  if (!dragged && !first) hire();
+};
+$('#cta').onclick = (e) => { e.preventDefault(); scrollToY(pageY($('#hire'))); };
+$('#card').onclick = (e) => { e.preventDefault(); scrollToY(0); };
+
+// ---- small things
+addEventListener('scroll', () => bar.classList.toggle('solid', scrollY > 60), { passive: true });
+addEventListener('keydown', (e) => e.key === 'Escape' && out());
+addEventListener('pointermove', (e) => { const c = e.target.closest?.('.cd'); if (c) { const r = c.getBoundingClientRect(); c.style.setProperty('--hx', `${100 - 100 * (e.clientX - r.left) / r.width}%`); } }, { passive: true }); // strength cards: the gold shine follows the mouse
+// Claude pixel mascot
+const M = [' ▐▛███▛█', '▝▜██████▀', '  ▝▝ ▝▝'], Q = { '█': '1111', '▐': '0101', '▛': '1110', '▜': '1101', '▝': '0100', '▀': '1100', ' ': '0000' };
+function paintMascots(scope) { scope.querySelectorAll('.mascot').forEach((e) => {
+  const c = +e.dataset.cell; let r = '';
+  M.forEach((row, y) => [...row].forEach((ch, x) => [...Q[ch]].forEach((on, n) => { if (on === '1') r += `<rect x="${x * c + (n % 2) * c / 2}" y="${y * 2 * c + (n >> 1) * c}" width="${c / 2 + .5}" height="${c + .5}"/>`; })));
+  e.innerHTML = `<svg width="${9 * c}" height="${6 * c}" viewBox="0 0 ${9 * c} ${6 * c}" aria-hidden="true"><g fill="#D97757">${r}</g></svg>`;
+}); }
+paintMascots(document);
+
+// storyboard / test hooks: ?inside=home opens a room, ?dive=aureyu&p=.8 freezes the zoom (both skip the loader)
+if (q.has('inside') || q.has('dive')) { loader.classList.add('gone'); document.body.classList.add('ready'); root.classList.remove('lock'); }
+else {
+  lay(rim()); requestAnimationFrame(load);
+  document.fonts.ready.then(() => { progress(35); if (!loader.classList.contains('out')) lay(rim()); });
+  setTimeout(() => progress(100), 9000); // never trap the page if the 3D can't load
+  addEventListener('resize', () => { if (!loader.classList.contains('out')) lay(rim()); });
+}
+if (q.get('inside')) { fill(q.get('inside')); room.hidden = false; }
+</script>
+<script type="module">
+import { createIsland } from './island.js';
+progress(70);
+await document.fonts.load('900 64px Inter');
+SHAPE.light = root.classList.contains('light');
+isle = createIsland($('#isle'), { onSelect: go, area, shape: SHAPE, intro: !(q.has('inside') || q.has('dive')) });
+isle.ready.then(() => progress(100));
+if (loader.classList.contains('out')) isle.start(); // the 9 s fallback already opened the page: build the town now
+document.fonts.ready.then(() => isle.fit());
+if (q.get('dive')) document.body.classList.add('diving'), isle.still(q.get('dive'), +(q.get('p') ?? .8));
+window.isle = isle;
+</script>
+</body></html>

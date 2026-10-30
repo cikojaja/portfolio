@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-labelledby="aureyu-title">
+  <title id="aureyu-title">AUREYU — 璟语</title>
+  <defs>
+    <linearGradient id="shell" x1="25" y1="12" x2="226" y2="252" gradientUnits="userSpaceOnUse"><stop stop-color="#45525A"/><stop offset=".32" stop-color="#20313E"/><stop offset=".7" stop-color="#101C29"/><stop offset="1" stop-color="#192D35"/></linearGradient>
+    <linearGradient id="edge" x1="60" y1="8" x2="182" y2="248" gradientUnits="userSpaceOnUse"><stop stop-color="#F3DFC1" stop-opacity=".8"/><stop offset=".4" stop-color="#9ABAC9" stop-opacity=".14"/><stop offset="1" stop-color="#91C7B6" stop-opacity=".45"/></linearGradient>
+    <linearGradient id="gold" x1="79" y1="54" x2="180" y2="192" gradientUnits="userSpaceOnUse"><stop stop-color="#FFF3DB"/><stop offset=".38" stop-color="#E4CDA7"/><stop offset=".73" stop-color="#C8AB7E"/><stop offset="1" stop-color="#F0DFC1"/></linearGradient>
+    <linearGradient id="jade" x1="76" y1="174" x2="185" y2="118" gradientUnits="userSpaceOnUse"><stop stop-color="#699F93"/><stop offset=".52" stop-color="#A1CBBB"/><stop offset="1" stop-color="#D7E8D6"/></linearGradient>
+    <radialGradient id="reflection" cx=".26" cy="0" r=".9"><stop stop-color="#F4E4CA" stop-opacity=".13"/><stop offset="1" stop-color="#F4E4CA" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect x="4" y="4" width="248" height="248" rx="57" fill="url(#shell)"/>
+  <rect x="4.75" y="4.75" width="246.5" height="246.5" rx="56.25" fill="url(#reflection)" stroke="url(#edge)" stroke-width="1.5"/>
+  <path d="M30 58C35 28 51 18 84 18H170C194 18 211 25 222 40" fill="none" stroke="#FFF3DB" stroke-opacity=".13" stroke-width="2" stroke-linecap="round"/>
+  <path d="M58 193 104 77C109 63 117 56 129 56S149 63 154 77L200 193H163L132 108C131 104 127 104 125 108L94 193Z" fill="#060E16" opacity=".3" transform="translate(0 5)"/>
+  <path d="M58 189 104 73C109 59 117 52 129 52S149 59 154 73L200 189H163L132 104C131 100 127 100 125 104L94 189Z" fill="url(#gold)"/>
+  <path d="M75 152C102 166 144 161 179 128L190 157C153 190 107 195 65 178Z" fill="#081722" opacity=".3" transform="translate(0 4)"/>
+  <path d="M75 149C102 163 144 158 179 125L190 154C153 187 107 192 65 175Z" fill="url(#jade)"/>
+  <path d="M76 149C104 163 145 157 179 125" fill="none" stroke="#F1F3DC" stroke-opacity=".55" stroke-width="1.5"/>
+</svg>
